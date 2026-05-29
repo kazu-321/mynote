@@ -19,9 +19,15 @@ import type {
 import type { SelectionRect } from "../../features/canvas/model/selectionTypes";
 import { screenToWorld, snapToStep } from "../../features/canvas/utils/coordinates";
 import { RenderedText } from "../../features/canvas/components/RenderedText";
+import { HistoryManager } from "../../features/history/historyManager";
 import { IconButton } from "../../shared/components/IconButton";
+import { Modal } from "../../shared/components/Modal";
 import { clamp } from "../../shared/utils/clamp";
 import { noteSchema } from "../../features/notes/model/noteSchemas";
+import { importImageFile, type PerspectiveTransformOptions, type TransparentBackgroundOptions } from "../../features/importers/imageImporter";
+import { importPdfPages, PDF_IMPORT_SCALES } from "../../features/importers/pdfImporter";
+import { createSnapshotCanvasCommand, type CanvasEditorState } from "../../features/history/commandTypes";
+import type { PdfImportQuality } from "../../features/notes/model/noteTypes";
 
 type Interaction =
   | { kind: "pan"; startPointer: Point; startViewport: CanvasViewport }
@@ -49,6 +55,7 @@ type Interaction =
   | null;
 
 type CanvasTool = "select" | "text" | "rect" | "ellipse" | "line" | "freehand";
+type CanvasSetStateAction<T> = T | ((current: T) => T);
 
 type ResizeHandle = "n" | "ne" | "e" | "se" | "s" | "sw" | "w" | "nw";
 
@@ -68,6 +75,22 @@ type ContextMenuState =
   | { kind: "canvas"; x: number; y: number }
   | { kind: "element"; x: number; y: number; elementId: string }
   | null;
+
+type PointOption = { x: number; y: number };
+
+type ImageImportDialogState = {
+  file: File;
+  previewUrl: string;
+  imageSize: { width: number; height: number };
+  transparentBackground: TransparentBackgroundOptions;
+  perspective: PerspectiveTransformOptions;
+};
+
+type PdfImportDialogState = {
+  file: File;
+  quality: PdfImportQuality;
+  customScale: number;
+};
 
 type TouchGesture =
   | { kind: "pan"; pointerId: number; startPointer: Point; startViewport: CanvasViewport }
@@ -560,7 +583,7 @@ function normalizeViewport(note: NoteData | null): CanvasViewport {
 }
 
 function normalizeGrid(note: NoteData | null): CanvasGrid {
-  return note?.canvas.grid ?? { mode: "free", snapStep: 10, gridSize: 100 };
+  return note?.canvas.grid ?? { mode: "free", snapStep: 10, gridSize: 100, visible: false };
 }
 
 function rectsIntersect(a: SelectionRect, element: CanvasElement) {
@@ -583,8 +606,8 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
   const [note, setNote] = useState<NoteData | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [viewport, setViewport] = useState<CanvasViewport>({ x: 0, y: 0, scale: 1 });
-  const [grid, setGrid] = useState<CanvasGrid>({ mode: "free", snapStep: 10, gridSize: 100 });
-  const [elements, setElements] = useState<CanvasElement[]>(DEMO_ELEMENTS);
+  const [canvasState, setCanvasState] = useState<CanvasEditorState>({ elements: DEMO_ELEMENTS, grid: { mode: "free", snapStep: 10, gridSize: 100, visible: false } });
+  const { elements, grid } = canvasState;
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [interaction, setInteraction] = useState<Interaction>(null);
   const [contextMenu, setContextMenu] = useState<ContextMenuState>(null);
@@ -592,20 +615,225 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
   const [inspector, setInspector] = useState<InspectorState>(null);
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [dirty, setDirty] = useState(false);
+  const [imageImportDialog, setImageImportDialog] = useState<ImageImportDialogState | null>(null);
+  const [pdfImportDialog, setPdfImportDialog] = useState<PdfImportDialogState | null>(null);
   const [spacePressed, setSpacePressed] = useState(false);
   const [shiftPressed, setShiftPressed] = useState(false);
   const [pendingLine, setPendingLine] = useState<{ start: Point; current: Point } | null>(null);
   const canvasRef = useRef<HTMLDivElement | null>(null);
   const viewportRef = useRef(viewport);
+  const canvasStateRef = useRef(canvasState);
   const touchGestureRef = useRef<TouchGesture>(null);
   const touchPointersRef = useRef<Map<number, { point: Point; pointerType: string }>>(new Map());
   const lastElementPointerDownRef = useRef<{ elementId: string; at: number } | null>(null);
   const lastSavedRef = useRef<string | null>(null);
   const saveTimerRef = useRef<number | null>(null);
+  const canvasHistoryRef = useRef(new HistoryManager());
+  const imageFileInputRef = useRef<HTMLInputElement | null>(null);
+  const pdfFileInputRef = useRef<HTMLInputElement | null>(null);
+  const importAnchorRef = useRef<Point>({ x: 0, y: 0 });
+  useEffect(() => {
+    canvasStateRef.current = canvasState;
+  }, [canvasState]);
+
+  function commitCanvasState(next: CanvasEditorState) {
+    canvasStateRef.current = next;
+    setCanvasState(next);
+  }
+
+  function serializeCanvasState(state: CanvasEditorState) {
+    return JSON.stringify(state);
+  }
+
+  function runCanvasCommand(command: ReturnType<typeof createSnapshotCanvasCommand>, options?: { resetHistory?: boolean }) {
+    if (options?.resetHistory) {
+      canvasHistoryRef.current.clear();
+      commitCanvasState(command.redo(canvasStateRef.current));
+      return;
+    }
+    const next = canvasHistoryRef.current.execute(command, canvasStateRef.current);
+    if (next !== canvasStateRef.current) {
+      commitCanvasState(next);
+    }
+  }
+
+  function setElements(action: CanvasSetStateAction<CanvasElement[]>) {
+    const current = canvasStateRef.current;
+    const nextElements = typeof action === "function" ? action(current.elements) : action;
+    runCanvasCommand(
+      createSnapshotCanvasCommand("update elements", current, {
+        ...current,
+        elements: nextElements,
+      }),
+    );
+  }
+
+  function setGrid(action: CanvasSetStateAction<CanvasGrid>) {
+    const current = canvasStateRef.current;
+    const nextGrid = typeof action === "function" ? action(current.grid) : action;
+    runCanvasCommand(
+      createSnapshotCanvasCommand("update grid", current, {
+        ...current,
+        grid: nextGrid,
+      }),
+    );
+  }
+
+  function undoCanvasChange() {
+    const next = canvasHistoryRef.current.undo(canvasStateRef.current);
+    if (next === canvasStateRef.current) return;
+    commitCanvasState(next);
+  }
+
+  function redoCanvasChange() {
+    const next = canvasHistoryRef.current.redo(canvasStateRef.current);
+    if (next === canvasStateRef.current) return;
+    commitCanvasState(next);
+  }
+
+  function openImageImportPicker(anchor: Point) {
+    importAnchorRef.current = anchor;
+    imageFileInputRef.current?.click();
+  }
+
+  function openPdfImportPicker(anchor: Point) {
+    importAnchorRef.current = anchor;
+    pdfFileInputRef.current?.click();
+  }
+
+  async function prepareImageImport(file: File) {
+    const previewUrl = URL.createObjectURL(file);
+    const image = new Image();
+    image.src = previewUrl;
+    await image.decode();
+    setImageImportDialog({
+      file,
+      previewUrl,
+      imageSize: { width: image.naturalWidth, height: image.naturalHeight },
+      transparentBackground: { enabled: false, mode: "none", tolerance: 12 },
+      perspective: {
+        enabled: false,
+        points: {
+          topLeft: { x: 0, y: 0 },
+          topRight: { x: image.naturalWidth, y: 0 },
+          bottomRight: { x: image.naturalWidth, y: image.naturalHeight },
+          bottomLeft: { x: 0, y: image.naturalHeight },
+        },
+        outputWidth: image.naturalWidth,
+        outputHeight: image.naturalHeight,
+      },
+    });
+  }
+
+  function preparePdfImport(file: File) {
+    setPdfImportDialog({
+      file,
+      quality: "standard",
+      customScale: 1,
+    });
+  }
+
+  function closeImageImportDialog() {
+    if (imageImportDialog?.previewUrl) URL.revokeObjectURL(imageImportDialog.previewUrl);
+    setImageImportDialog(null);
+  }
+
+  function closePdfImportDialog() {
+    setPdfImportDialog(null);
+  }
+
+  async function confirmImageImport() {
+    if (!imageImportDialog) return;
+    const result = await importImageFile(imageImportDialog.file, {
+      transparentBackground: imageImportDialog.transparentBackground,
+      perspective: imageImportDialog.perspective,
+    });
+    const asset = await storage.writePngAsset({
+      subjectId: props.subjectId,
+      noteId: props.noteId,
+      bytes: result.bytes,
+      fileName: `${imageImportDialog.file.name.replace(/\.[^.]+$/, "") || "image"}.png`,
+    });
+    const timestamp = nowIso();
+    const image: ImageCanvasElement = {
+      id: crypto.randomUUID(),
+      type: "image",
+      x: screenToWorld(importAnchorRef.current, viewport).x,
+      y: screenToWorld(importAnchorRef.current, viewport).y,
+      width: result.width,
+      height: result.height,
+      rotation: 0,
+      zIndex: nextZIndex(elements),
+      src: asset.path,
+      sourceType: "image",
+      originalFileName: undefined,
+      importInfo: {
+        importedAt: timestamp,
+        transparentBackgroundApplied: imageImportDialog.transparentBackground.enabled,
+        perspectiveTransformApplied: imageImportDialog.perspective.enabled,
+      },
+      createdAt: timestamp,
+      updatedAt: timestamp,
+    };
+    setElements((current) => [...current, image]);
+    closeImageImportDialog();
+  }
+
+  async function confirmPdfImport() {
+    if (!pdfImportDialog) return;
+    const pages = await importPdfPages(pdfImportDialog.file, pdfImportDialog.quality, pdfImportDialog.customScale);
+    const basePoint = screenToWorld(importAnchorRef.current, viewport);
+    let cursorY = basePoint.y;
+    const spacing = 40;
+    let nextZ = nextZIndex(elements);
+    const insertedImages: ImageCanvasElement[] = [];
+    for (const page of pages) {
+      const asset = await storage.writePngAsset({
+        subjectId: props.subjectId,
+        noteId: props.noteId,
+        bytes: page.bytes,
+        fileName: `${pdfImportDialog.file.name.replace(/\.[^.]+$/, "")}-page-${String(page.pageNumber).padStart(3, "0")}.png`,
+      });
+      const timestamp = nowIso();
+      const image: ImageCanvasElement = {
+        id: crypto.randomUUID(),
+        type: "image",
+        x: basePoint.x,
+        y: cursorY,
+        width: page.width,
+        height: page.height,
+        rotation: 0,
+        zIndex: nextZ,
+        src: asset.path,
+        sourceType: "pdf-page",
+        pageNumber: page.pageNumber,
+        importInfo: {
+          importedAt: timestamp,
+          pdfScale: pdfImportDialog.quality === "custom" ? pdfImportDialog.customScale : PDF_IMPORT_SCALES[pdfImportDialog.quality],
+        },
+        createdAt: timestamp,
+        updatedAt: timestamp,
+      };
+      insertedImages.push(image);
+      nextZ += 1;
+      cursorY += page.height + spacing;
+    }
+    if (insertedImages.length > 0) {
+      setElements((current) => [...current, ...insertedImages]);
+    }
+    closePdfImportDialog();
+  }
 
   useEffect(() => {
     viewportRef.current = viewport;
   }, [viewport]);
+
+  useEffect(() => {
+    return () => {
+      if (imageImportDialog?.previewUrl) URL.revokeObjectURL(imageImportDialog.previewUrl);
+    };
+  }, [imageImportDialog?.previewUrl]);
 
   useEffect(() => {
     if (tool !== "line") setPendingLine(null);
@@ -644,20 +872,25 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
         setNoteMeta(nextMeta);
         setNote(nextNote);
         setViewport(normalizeViewport(nextNote));
-        setGrid(normalizeGrid(nextNote));
-        setElements(toCanvasElements(nextNote));
+        commitCanvasState({
+          elements: toCanvasElements(nextNote),
+          grid: { ...normalizeGrid(nextNote) },
+        });
+        canvasHistoryRef.current.clear();
         setSelectedIds([]);
         setInspector(null);
         setContextMenu(null);
-        lastSavedRef.current = JSON.stringify({
+        const serialized = JSON.stringify({
           ...nextNote,
           canvas: {
             type: "infinite" as const,
             viewport: normalizeViewport(nextNote),
-            grid: normalizeGrid(nextNote),
+            grid: { ...normalizeGrid(nextNote) },
             elements: toCanvasElements(nextNote),
           },
         });
+        lastSavedRef.current = serialized;
+        setDirty(false);
       })
       .catch((error: unknown) => {
         if (cancelled) return;
@@ -665,12 +898,31 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
         setSubject(null);
         setNoteMeta(null);
         setNote(null);
-        setElements(DEMO_ELEMENTS);
+        commitCanvasState({ elements: DEMO_ELEMENTS, grid: { mode: "free", snapStep: 10, gridSize: 100, visible: false } });
+        canvasHistoryRef.current.clear();
+        setDirty(false);
       });
     return () => {
       cancelled = true;
     };
   }, [props.noteId, props.subjectId, storage]);
+
+  useEffect(() => {
+    if (!note) {
+      setDirty(false);
+      return;
+    }
+    const snapshot = JSON.stringify({
+      ...note,
+      canvas: {
+        type: "infinite" as const,
+        viewport,
+        grid: { ...grid },
+        elements,
+      },
+    });
+    setDirty(snapshot !== lastSavedRef.current);
+  }, [elements, grid, note, viewport]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -691,6 +943,27 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
         setContextMenu(null);
         setInteraction(null);
         setPendingLine(null);
+      }
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "z") {
+        event.preventDefault();
+        if (event.shiftKey) redoCanvasChange();
+        else undoCanvasChange();
+        setSelectedIds([]);
+        setInspector(null);
+        setContextMenu(null);
+        setInteraction(null);
+        setPendingLine(null);
+        return;
+      }
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "y") {
+        event.preventDefault();
+        redoCanvasChange();
+        setSelectedIds([]);
+        setInspector(null);
+        setContextMenu(null);
+        setInteraction(null);
+        setPendingLine(null);
+        return;
       }
       if ((event.metaKey || event.ctrlKey) && (event.key === "=" || event.key === "+")) {
         event.preventDefault();
@@ -728,20 +1001,32 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
       canvas: {
         type: "infinite" as const,
         viewport,
-        grid,
+        grid: { ...grid },
         elements,
       },
     };
-    const serialized = JSON.stringify(snapshot);
-    if (serialized === lastSavedRef.current) return;
+    const parsed = noteSchema.safeParse(snapshot);
+    if (!parsed.success) {
+      setSaveStatus("error");
+      setSaveError(parsed.error.issues.map((issue) => issue.message).join("; "));
+      return;
+    }
+    const serialized = JSON.stringify(parsed.data);
+    if (serialized === lastSavedRef.current) {
+      setSaveStatus("saved");
+      setSaveError(null);
+      return;
+    }
+    if (!dirty && serialized !== lastSavedRef.current) return;
     setSaveStatus("saving");
     setSaveError(null);
     if (saveTimerRef.current) window.clearTimeout(saveTimerRef.current);
     saveTimerRef.current = window.setTimeout(() => {
-      void storage.saveNote(snapshot)
+      void storage.saveNote(parsed.data)
         .then(() => {
           lastSavedRef.current = serialized;
           setSaveStatus("saved");
+          setDirty(false);
         })
         .catch((error: unknown) => {
           setSaveStatus("error");
@@ -751,7 +1036,7 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
     return () => {
       if (saveTimerRef.current) window.clearTimeout(saveTimerRef.current);
     };
-  }, [elements, grid, note, storage, viewport]);
+  }, [dirty, elements, grid, note, storage, viewport]);
 
   useEffect(() => {
     const preventBrowserZoom = (event: WheelEvent) => {
@@ -1081,7 +1366,7 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
       const next = [...current];
       const baseZ = nextZIndex(next);
       for (const element of current.filter((item) => selectedIds.includes(item.id))) {
-        const copy = { ...element, id: `${element.id}-copy-${Date.now()}`, x: element.x + offset, y: element.y + offset, zIndex: baseZ + next.length };
+        const copy = { ...element, id: crypto.randomUUID(), x: element.x + offset, y: element.y + offset, zIndex: baseZ + next.length };
         next.push(copy);
       }
       return next;
@@ -1119,57 +1404,57 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
 
   function reorderSelected(to: "front" | "back" | "forward" | "backward") {
     setElements((current) => {
-      const next = [...current];
-      const selected = next.filter((element) => selectedIds.includes(element.id));
+      const selected = current.filter((element) => selectedIds.includes(element.id));
       if (selected.length === 0) return current;
       if (to === "front") {
-        const base = nextZIndex(next);
-        for (let i = 0; i < selected.length; i += 1) {
-          const element = selected[i];
-          element.zIndex = base + i;
-        }
+        const base = nextZIndex(current);
+        const selectedIdsSet = new Set(selected.map((element) => element.id));
+        let offset = 0;
+        return current.map((element) => (selectedIdsSet.has(element.id) ? { ...element, zIndex: base + offset++ } : element));
       }
       if (to === "back") {
-        const min = next.reduce((acc, element) => Math.min(acc, element.zIndex), 0) - selected.length - 1;
-        for (let i = 0; i < selected.length; i += 1) {
-          selected[i].zIndex = min + i;
-        }
+        const min = current.reduce((acc, element) => Math.min(acc, element.zIndex), 0) - selected.length - 1;
+        const selectedIdsSet = new Set(selected.map((element) => element.id));
+        let offset = 0;
+        return current.map((element) => (selectedIdsSet.has(element.id) ? { ...element, zIndex: min + offset++ } : element));
       }
       if (to === "forward") {
-        for (const element of selected) element.zIndex += 1;
+        const selectedIdsSet = new Set(selected.map((element) => element.id));
+        return current.map((element) => (selectedIdsSet.has(element.id) ? { ...element, zIndex: element.zIndex + 1 } : element));
       }
       if (to === "backward") {
-        for (const element of selected) element.zIndex -= 1;
+        const selectedIdsSet = new Set(selected.map((element) => element.id));
+        return current.map((element) => (selectedIdsSet.has(element.id) ? { ...element, zIndex: element.zIndex - 1 } : element));
       }
-      return [...next];
+      return current;
     });
   }
 
   function reorderElementsByIds(elementIds: string[], to: "front" | "back" | "forward" | "backward") {
     setElements((current) => {
-      const next = [...current];
-      const selected = next.filter((element) => elementIds.includes(element.id));
+      const selected = current.filter((element) => elementIds.includes(element.id));
       if (selected.length === 0) return current;
       if (to === "front") {
-        const base = nextZIndex(next);
-        for (let i = 0; i < selected.length; i += 1) {
-          const element = selected[i];
-          element.zIndex = base + i;
-        }
+        const base = nextZIndex(current);
+        const selectedIdsSet = new Set(selected.map((element) => element.id));
+        let offset = 0;
+        return current.map((element) => (selectedIdsSet.has(element.id) ? { ...element, zIndex: base + offset++ } : element));
       }
       if (to === "back") {
-        const min = next.reduce((acc, element) => Math.min(acc, element.zIndex), 0) - selected.length - 1;
-        for (let i = 0; i < selected.length; i += 1) {
-          selected[i].zIndex = min + i;
-        }
+        const min = current.reduce((acc, element) => Math.min(acc, element.zIndex), 0) - selected.length - 1;
+        const selectedIdsSet = new Set(selected.map((element) => element.id));
+        let offset = 0;
+        return current.map((element) => (selectedIdsSet.has(element.id) ? { ...element, zIndex: min + offset++ } : element));
       }
       if (to === "forward") {
-        for (const element of selected) element.zIndex += 1;
+        const selectedIdsSet = new Set(selected.map((element) => element.id));
+        return current.map((element) => (selectedIdsSet.has(element.id) ? { ...element, zIndex: element.zIndex + 1 } : element));
       }
       if (to === "backward") {
-        for (const element of selected) element.zIndex -= 1;
+        const selectedIdsSet = new Set(selected.map((element) => element.id));
+        return current.map((element) => (selectedIdsSet.has(element.id) ? { ...element, zIndex: element.zIndex - 1 } : element));
       }
-      return [...next];
+      return current;
     });
   }
 
@@ -1479,6 +1764,14 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
             : createTextElement(screenToWorld(interaction.startPointer, viewport))
       : null;
   const noteTitle = noteMeta?.title ?? note?.title ?? "Note";
+  const imageImportPoints = imageImportDialog
+    ? imageImportDialog.perspective.points ?? {
+        topLeft: { x: 0, y: 0 },
+        topRight: { x: imageImportDialog.imageSize.width, y: 0 },
+        bottomRight: { x: imageImportDialog.imageSize.width, y: imageImportDialog.imageSize.height },
+        bottomLeft: { x: 0, y: imageImportDialog.imageSize.height },
+      }
+    : null;
 
   return (
     <main className="editor-shell">
@@ -1500,6 +1793,8 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
               <IconButton label="丸" icon="◯" className={tool === "ellipse" ? "active" : ""} onClick={() => setTool("ellipse")} />
               <IconButton label="線" icon="／" className={tool === "line" ? "active" : ""} onClick={() => setTool("line")} />
               <IconButton label="お絵描き" icon="✎" className={tool === "freehand" ? "active" : ""} onClick={() => setTool("freehand")} />
+              <IconButton label="元に戻す" icon="↶" onClick={() => undoCanvasChange()} />
+              <IconButton label="やり直し" icon="↷" onClick={() => redoCanvasChange()} />
               <IconButton
                 label={grid.mode === "assisted" ? "グリッドモード: enable" : "グリッドモード: disable"}
                 icon={grid.mode === "assisted" ? "▦" : "◌"}
@@ -1721,6 +2016,8 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
                     <button type="button" onClick={() => { addElementAtCanvasPoint("ellipse", { x: contextMenu.x, y: contextMenu.y }); setContextMenu(null); }}>丸を追加</button>
                     <button type="button" onClick={() => { startToolAtCanvasPoint("line", { x: contextMenu.x, y: contextMenu.y }); setContextMenu(null); }}>線を開始</button>
                     <button type="button" onClick={() => { startToolAtCanvasPoint("freehand", { x: contextMenu.x, y: contextMenu.y }); setContextMenu(null); }}>お絵描きを開始</button>
+                    <button type="button" onClick={() => { openImageImportPicker({ x: contextMenu.x, y: contextMenu.y }); setContextMenu(null); }}>画像を取り込む</button>
+                    <button type="button" onClick={() => { openPdfImportPicker({ x: contextMenu.x, y: contextMenu.y }); setContextMenu(null); }}>PDFを取り込む</button>
                     <button type="button" onClick={() => { setGrid((current) => ({ ...current, mode: current.mode === "free" ? "assisted" : "free" })); setContextMenu(null); }}>グリッドモード切替</button>
                     <button type="button" onClick={() => { setViewport({ x: 0, y: 0, scale: 1 }); setContextMenu(null); }}>表示リセット</button>
                   </>
@@ -1975,12 +2272,214 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
         )}
       </section>
 
+      <input
+        ref={imageFileInputRef}
+        type="file"
+        accept="image/*"
+        hidden
+        onChange={async (event) => {
+          const file = event.currentTarget.files?.[0];
+          event.currentTarget.value = "";
+          if (file) await prepareImageImport(file);
+        }}
+      />
+      <input
+        ref={pdfFileInputRef}
+        type="file"
+        accept="application/pdf"
+        hidden
+        onChange={(event) => {
+          const file = event.currentTarget.files?.[0];
+          event.currentTarget.value = "";
+          if (file) preparePdfImport(file);
+        }}
+      />
+
+      <Modal open={imageImportDialog !== null} title="画像を取り込む" onClose={closeImageImportDialog}>
+        {imageImportDialog && (
+          <div className="modal-body">
+            <div className="modal-preview">
+              <img src={imageImportDialog.previewUrl} alt={imageImportDialog.file.name} />
+            </div>
+            <p className="muted">{imageImportDialog.file.name}</p>
+            <label>
+              <input
+                type="checkbox"
+                checked={imageImportDialog.transparentBackground.enabled}
+                onChange={(event) => setImageImportDialog((current) => current ? {
+                  ...current,
+                  transparentBackground: { ...current.transparentBackground, enabled: event.target.checked },
+                } : current)}
+              />
+              透明背景を処理する
+            </label>
+            <label>
+              <span>方式</span>
+              <select
+                value={imageImportDialog.transparentBackground.mode}
+                onChange={(event) => setImageImportDialog((current) => current ? {
+                  ...current,
+                  transparentBackground: { ...current.transparentBackground, mode: event.target.value as TransparentBackgroundOptions["mode"] },
+                } : current)}
+              >
+                <option value="none">none</option>
+                <option value="near-white">near-white</option>
+                <option value="picked-color">picked-color</option>
+              </select>
+            </label>
+            <label>
+              <span>tolerance</span>
+              <PropertyNumberField
+                value={imageImportDialog.transparentBackground.tolerance}
+                onCommit={(next) => setImageImportDialog((current) => current ? {
+                  ...current,
+                  transparentBackground: { ...current.transparentBackground, tolerance: Math.max(0, next) },
+                } : current)}
+              />
+            </label>
+            {imageImportDialog.transparentBackground.mode === "picked-color" && (
+              <label>
+                <span>picked</span>
+                <input
+                  type="color"
+                  value={imageImportDialog.transparentBackground.pickedColor ?? "#ffffff"}
+                  onChange={(event) => setImageImportDialog((current) => current ? {
+                    ...current,
+                    transparentBackground: { ...current.transparentBackground, pickedColor: event.target.value },
+                  } : current)}
+                />
+              </label>
+            )}
+            <label>
+              <input
+                type="checkbox"
+                checked={imageImportDialog.perspective.enabled}
+                onChange={(event) => setImageImportDialog((current) => current ? {
+                  ...current,
+                  perspective: { ...current.perspective, enabled: event.target.checked },
+                } : current)}
+              />
+              perspective transform
+            </label>
+            <div className="modal-grid">
+              <label>
+                <span>output W</span>
+                <PropertyNumberField
+                  value={imageImportDialog.perspective.outputWidth ?? imageImportDialog.imageSize.width}
+                  onCommit={(next) => setImageImportDialog((current) => current ? {
+                    ...current,
+                    perspective: { ...current.perspective, outputWidth: Math.max(1, Math.trunc(next)) },
+                  } : current)}
+                />
+              </label>
+              <label>
+                <span>output H</span>
+                <PropertyNumberField
+                  value={imageImportDialog.perspective.outputHeight ?? imageImportDialog.imageSize.height}
+                  onCommit={(next) => setImageImportDialog((current) => current ? {
+                    ...current,
+                    perspective: { ...current.perspective, outputHeight: Math.max(1, Math.trunc(next)) },
+                  } : current)}
+                />
+              </label>
+            </div>
+            <div className="modal-corners">
+              {imageImportPoints && (["topLeft", "topRight", "bottomRight", "bottomLeft"] as const).map((name) => {
+                const point = imageImportPoints[name];
+                return (
+                  <div key={name} className="modal-corner-row">
+                    <strong>{name}</strong>
+                    <label>
+                      <span>x</span>
+                      <PropertyNumberField
+                        value={point.x}
+                        onCommit={(next) => setImageImportDialog((current) => current ? {
+                          ...current,
+                          perspective: {
+                            ...current.perspective,
+                            points: {
+                              ...(current.perspective.points ?? imageImportPoints),
+                              [name]: { ...point, x: Math.max(0, next) },
+                            },
+                          },
+                        } : current)}
+                      />
+                    </label>
+                    <label>
+                      <span>y</span>
+                      <PropertyNumberField
+                        value={point.y}
+                        onCommit={(next) => setImageImportDialog((current) => current ? {
+                          ...current,
+                          perspective: {
+                            ...current.perspective,
+                            points: {
+                              ...(current.perspective.points ?? imageImportPoints),
+                              [name]: { ...point, y: Math.max(0, next) },
+                            },
+                          },
+                        } : current)}
+                      />
+                    </label>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="modal-actions">
+              <button type="button" onClick={closeImageImportDialog}>キャンセル</button>
+              <button type="button" onClick={() => void confirmImageImport()}>取り込む</button>
+            </div>
+          </div>
+        )}
+      </Modal>
+
+      <Modal open={pdfImportDialog !== null} title="PDFを取り込む" onClose={closePdfImportDialog}>
+        {pdfImportDialog && (
+          <div className="modal-body">
+            <p className="muted">{pdfImportDialog.file.name}</p>
+            <label>
+              <span>quality</span>
+              <select
+                value={pdfImportDialog.quality}
+                onChange={(event) => setPdfImportDialog((current) => current ? {
+                  ...current,
+                  quality: event.target.value as PdfImportQuality,
+                } : current)}
+              >
+                <option value="light">light</option>
+                <option value="standard">standard</option>
+                <option value="high">high</option>
+                <option value="ultra">ultra</option>
+                <option value="custom">custom</option>
+              </select>
+            </label>
+            {pdfImportDialog.quality === "custom" && (
+              <label>
+                <span>scale</span>
+                <PropertyNumberField
+                  value={pdfImportDialog.customScale}
+                  onCommit={(next) => setPdfImportDialog((current) => current ? {
+                    ...current,
+                    customScale: Math.max(0.1, next),
+                  } : current)}
+                />
+              </label>
+            )}
+            <p className="muted">all pages are converted to PNG and placed vertically.</p>
+            <div className="modal-actions">
+              <button type="button" onClick={closePdfImportDialog}>キャンセル</button>
+              <button type="button" onClick={() => void confirmPdfImport()}>取り込む</button>
+            </div>
+          </div>
+        )}
+      </Modal>
+
       <footer className="editor-footer">
         <span>viewport: {viewport.x.toFixed(0)}, {viewport.y.toFixed(0)}, {viewport.scale.toFixed(2)}</span>
         <span>selected: {selectedIds.length}</span>
         <span>grid mode: use_grid: {grid.mode === "assisted" ? "enable" : "disable"}</span>
         <span>tool: {tool}</span>
-        <span>save: {saveStatus}{saveError ? ` / ${saveError}` : ""}</span>
+        <span>save: {saveStatus}{dirty ? " / dirty" : ""}{saveError ? ` / ${saveError}` : ""}</span>
         {appConfig.mode === "local-edit" && <span>drag to move selected demo elements</span>}
       </footer>
       {loadError ? <p className="error">{loadError}</p> : null}

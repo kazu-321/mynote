@@ -118,7 +118,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   padding: 24px;
 }
 .modal {
-  width: min(460px, 100%);
+  width: min(760px, 100%);
   border-radius: 20px;
   background: var(--panel);
   border: 1px solid var(--border);
@@ -133,6 +133,51 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   border-radius: 12px;
   padding: 10px 12px;
   font: inherit;
+}
+.modal-body { display: grid; gap: 14px; }
+.modal-preview {
+  max-height: 280px;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.72);
+  padding: 8px;
+}
+.modal-preview img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+.modal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.modal-corners {
+  display: grid;
+  gap: 10px;
+}
+.modal-corner-row {
+  display: grid;
+  grid-template-columns: 90px repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  align-items: center;
+}
+.modal-body label {
+  display: grid;
+  gap: 6px;
+}
+.modal-body input[type="checkbox"] {
+  width: auto;
+}
+.modal-body input[type="text"],
+.modal-body input[type="number"],
+.modal-body select {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font: inherit;
+  background: white;
 }
 
 .editor-shell {

@@ -135,6 +135,7 @@ export const noteSchema = z.object({
       mode: z.union([z.literal("free"), z.literal("assisted")]),
       snapStep: z.number(),
       gridSize: z.number(),
+      visible: z.boolean().default(false),
     }),
     elements: z.array(canvasElementSchema),
   }),

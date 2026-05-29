@@ -1,6 +1,8 @@
 import type { CanvasElement } from "../../canvas/model/elementTypes";
 import type { CanvasViewport } from "../../canvas/model/viewportTypes";
 
+export type PdfImportQuality = "light" | "standard" | "high" | "ultra" | "custom";
+
 export interface NoteMeta {
   schemaVersion: number;
   id: string;
@@ -22,7 +24,7 @@ export interface NoteData {
   canvas: {
     type: "infinite";
     viewport: CanvasViewport;
-    grid: { mode: "free" | "assisted"; snapStep: number; gridSize: number };
+    grid: { mode: "free" | "assisted"; snapStep: number; gridSize: number; visible: boolean };
     elements: CanvasElement[];
   };
 }

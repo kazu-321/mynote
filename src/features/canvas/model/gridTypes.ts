@@ -4,4 +4,5 @@ export interface CanvasGrid {
   mode: GridMode;
   snapStep: number;
   gridSize: number;
+  visible: boolean;
 }

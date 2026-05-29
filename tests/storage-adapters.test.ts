@@ -101,3 +101,50 @@ test("readonly writes fail immediately", async () => {
     subjects: [],
   }), /Readonly mode does not allow writes/);
 });
+
+test("readonly adapter rejects all write-oriented methods", async () => {
+  const adapter = new StaticReadonlyStorageAdapter();
+  const writeCalls: Array<Promise<unknown>> = [
+    adapter.saveSubject({
+      schemaVersion: 1,
+      id: "subject-a",
+      name: "数学",
+      description: "",
+      createdAt: "2026-05-30T00:00:00.000Z",
+      updatedAt: "2026-05-30T00:00:00.000Z",
+      noteOrder: [],
+      notes: [],
+    }),
+    adapter.saveNoteMeta({
+      schemaVersion: 1,
+      id: "note-a",
+      subjectId: "subject-a",
+      title: "微分積分",
+      description: "",
+      createdAt: "2026-05-30T00:00:00.000Z",
+      updatedAt: "2026-05-30T00:00:00.000Z",
+    }),
+    adapter.saveNote({
+      schemaVersion: 1,
+      id: "note-a",
+      subjectId: "subject-a",
+      title: "微分積分",
+      createdAt: "2026-05-30T00:00:00.000Z",
+      updatedAt: "2026-05-30T00:00:00.000Z",
+      canvas: {
+        type: "infinite",
+        viewport: { x: 0, y: 0, scale: 1 },
+        grid: { mode: "free", snapStep: 10, gridSize: 100, visible: false },
+        elements: [],
+      },
+    }),
+    adapter.createNote({ subjectId: "subject-a", title: "新規" }),
+    adapter.deleteSubject("subject-a"),
+    adapter.deleteNote("subject-a", "note-a"),
+    adapter.writePngAsset({ subjectId: "subject-a", noteId: "note-a", bytes: new Uint8Array([1, 2, 3]), fileName: "image.png" }),
+    adapter.deleteAsset({ subjectId: "subject-a", noteId: "note-a", path: "assets/images/image.png" }),
+    adapter.generateThumbnail({ subjectId: "subject-a", noteId: "note-a" }),
+  ];
+
+  await Promise.all(writeCalls.map((call) => assert.rejects(call, /Readonly mode does not allow writes/)));
+});

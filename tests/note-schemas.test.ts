@@ -54,11 +54,11 @@ const note = {
   title: "微分積分",
   createdAt: baseTimestamp,
   updatedAt: baseTimestamp,
-  canvas: {
-    type: "infinite",
-    viewport: { x: 0, y: 0, scale: 1 },
-    grid: { mode: "free", snapStep: 10, gridSize: 100 },
-    elements: [
+    canvas: {
+      type: "infinite",
+      viewport: { x: 0, y: 0, scale: 1 },
+      grid: { mode: "free", snapStep: 10, gridSize: 100, visible: false },
+      elements: [
       {
         id: "element-a",
         type: "text",
