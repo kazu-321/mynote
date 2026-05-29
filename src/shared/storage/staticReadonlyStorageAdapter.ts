@@ -5,10 +5,16 @@ import type { NoteData, NoteMeta, CreateSubjectInput, CreateNoteInput, WritePngA
 import type { AppMode } from "../../app/appMode";
 
 const readonlyError = () => new Error("Readonly mode does not allow writes.");
-const publicBaseUrl = new URL(import.meta.env.BASE_URL, window.location.href);
+
+function staticDataPath(path: string) {
+  if (typeof window === "undefined" || typeof document === "undefined") {
+    return `/data/${path}`;
+  }
+  return new URL(`data/${path}`, document.baseURI).toString();
+}
 
 async function readJson<T>(path: string): Promise<T> {
-  const response = await fetch(new URL(`data/${path}`, publicBaseUrl));
+  const response = await fetch(staticDataPath(path));
   if (!response.ok) throw new Error(`Failed to load ${path}: ${response.status}`);
   return response.json() as Promise<T>;
 }
