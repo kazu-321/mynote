@@ -48,6 +48,7 @@ type Interaction =
       startViewport: CanvasViewport;
       startElement: CanvasElement;
       startBounds: Bounds;
+      startSnapshot: CanvasEditorState;
     }
   | {
       kind: "draw";
@@ -116,6 +117,10 @@ type TouchGesture =
 
 const MIN_SAFE_ZOOM = 0.00001;
 const MAX_SAFE_ZOOM = 10000;
+const PROPERTY_PANEL_WIDTH = 340;
+const PROPERTY_PANEL_HEIGHT = 560;
+const CONTEXT_MENU_WIDTH = 280;
+const CONTEXT_MENU_HEIGHT = 340;
 const DEFAULT_TEXT_STYLE = {
   fontSize: 18,
   color: "#1f1a17",
@@ -159,6 +164,16 @@ function elementBounds(element: CanvasElement) {
     return { left, top, right, bottom };
   }
   return { left: element.x, top: element.y, right: element.x + element.width, bottom: element.y + element.height };
+}
+
+function elementScreenBounds(element: CanvasElement, viewport: CanvasViewport) {
+  const bounds = elementBounds(element);
+  return {
+    left: bounds.left * viewport.scale + viewport.x,
+    top: bounds.top * viewport.scale + viewport.y,
+    right: bounds.right * viewport.scale + viewport.x,
+    bottom: bounds.bottom * viewport.scale + viewport.y,
+  };
 }
 
 function clampBounds(bounds: Bounds): Bounds {
@@ -449,6 +464,7 @@ function PropertyNumberField(props: {
   onCommit: (next: number) => void;
   min?: number;
   step?: number;
+  disabled?: boolean;
 }) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [text, setText] = useState(String(props.value));
@@ -491,6 +507,7 @@ function PropertyNumberField(props: {
           event.currentTarget.blur();
         }
       }}
+      disabled={props.disabled}
       aria-label="number input"
     />
   );
@@ -610,6 +627,15 @@ function nextZIndex(elements: CanvasElement[]) {
   return (elements.reduce((max, element) => Math.max(max, element.zIndex), 0) || 0) + 1;
 }
 
+function clampFloatingRect(anchor: Point, width: number, height: number) {
+  const maxLeft = Math.max(12, window.innerWidth - width - 12);
+  const maxTop = Math.max(12, window.innerHeight - height - 12);
+  return {
+    left: clamp(anchor.x + 12, 12, maxLeft),
+    top: clamp(anchor.y + 12, 12, maxTop),
+  };
+}
+
 export function NoteEditorPage(props: { subjectId: string; noteId: string; onBack: () => void }) {
   const storage = useMemo(() => createStorageAdapter(appConfig.mode), []);
   const [subject, setSubject] = useState<SubjectData | null>(null);
@@ -629,6 +655,7 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
   const [dirty, setDirty] = useState(false);
   const [imageImportDialog, setImageImportDialog] = useState<ImageImportDialogState | null>(null);
   const [pdfImportDialog, setPdfImportDialog] = useState<PdfImportDialogState | null>(null);
+  const [pdfImportLoading, setPdfImportLoading] = useState(false);
   const [spacePressed, setSpacePressed] = useState(false);
   const [shiftPressed, setShiftPressed] = useState(false);
   const [pendingLine, setPendingLine] = useState<{ start: Point; current: Point } | null>(null);
@@ -644,7 +671,9 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
   const imageFileInputRef = useRef<HTMLInputElement | null>(null);
   const pdfFileInputRef = useRef<HTMLInputElement | null>(null);
   const imageImportPreviewRef = useRef<HTMLImageElement | null>(null);
+  const imageImportCropperRef = useRef<HTMLDivElement | null>(null);
   const imageImportDragRef = useRef<ImageImportDragState | null>(null);
+  const [imageImportPreviewLayout, setImageImportPreviewLayout] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
   const importAnchorRef = useRef<Point>({ x: 0, y: 0 });
   useEffect(() => {
     canvasStateRef.current = canvasState;
@@ -756,7 +785,7 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
   function preparePdfImport(file: File) {
     setPdfImportDialog({
       file,
-      quality: "standard",
+      quality: "light",
       customScale: 1,
     });
   }
@@ -764,10 +793,12 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
   function closeImageImportDialog() {
     imageImportDragRef.current = null;
     if (imageImportDialog?.previewUrl) URL.revokeObjectURL(imageImportDialog.previewUrl);
+    setImageImportPreviewLayout(null);
     setImageImportDialog(null);
   }
 
   function closePdfImportDialog() {
+    setPdfImportLoading(false);
     setPdfImportDialog(null);
   }
 
@@ -840,17 +871,53 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
     }
   }
 
+  useEffect(() => {
+    if (!imageImportDialog) {
+      setImageImportPreviewLayout(null);
+      return;
+    }
+    const updateLayout = () => {
+      const image = imageImportPreviewRef.current;
+      const cropper = imageImportCropperRef.current;
+      if (!image || !cropper) return;
+      const imageRect = image.getBoundingClientRect();
+      const cropperRect = cropper.getBoundingClientRect();
+      setImageImportPreviewLayout({
+        left: imageRect.left - cropperRect.left,
+        top: imageRect.top - cropperRect.top,
+        width: imageRect.width,
+        height: imageRect.height,
+      });
+    };
+    updateLayout();
+    const resizeObserver = typeof ResizeObserver !== "undefined"
+      ? new ResizeObserver(() => updateLayout())
+      : null;
+    if (resizeObserver) {
+      if (imageImportPreviewRef.current) resizeObserver.observe(imageImportPreviewRef.current);
+      if (imageImportCropperRef.current) resizeObserver.observe(imageImportCropperRef.current);
+    }
+    window.addEventListener("resize", updateLayout);
+    const raf = window.requestAnimationFrame(updateLayout);
+    return () => {
+      window.cancelAnimationFrame(raf);
+      window.removeEventListener("resize", updateLayout);
+      resizeObserver?.disconnect();
+    };
+  }, [imageImportDialog]);
+
   async function confirmImageImport() {
     if (!imageImportDialog) return;
     const result = await importImageFile(imageImportDialog.file, {
       transparentBackground: imageImportDialog.transparentBackground,
       perspective: imageImportDialog.perspective,
     });
+    const assetName = `${imageImportDialog.file.name.replace(/\.[^.]+$/, "") || "image"}-${crypto.randomUUID()}.png`;
     const asset = await storage.writePngAsset({
       subjectId: props.subjectId,
       noteId: props.noteId,
       bytes: result.bytes,
-      fileName: `${imageImportDialog.file.name.replace(/\.[^.]+$/, "") || "image"}.png`,
+      fileName: assetName,
     });
     const timestamp = nowIso();
     const image: ImageCanvasElement = {
@@ -878,48 +945,54 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
   }
 
   async function confirmPdfImport() {
-    if (!pdfImportDialog) return;
-    const pages = await importPdfPages(pdfImportDialog.file, pdfImportDialog.quality, pdfImportDialog.customScale);
-    const basePoint = screenToWorld(importAnchorRef.current, viewport);
-    let cursorY = basePoint.y;
-    const spacing = 40;
-    let nextZ = nextZIndex(elements);
-    const insertedImages: ImageCanvasElement[] = [];
-    for (const page of pages) {
-      const asset = await storage.writePngAsset({
-        subjectId: props.subjectId,
-        noteId: props.noteId,
-        bytes: page.bytes,
-        fileName: `${pdfImportDialog.file.name.replace(/\.[^.]+$/, "")}-page-${String(page.pageNumber).padStart(3, "0")}.png`,
-      });
-      const timestamp = nowIso();
-      const image: ImageCanvasElement = {
-        id: crypto.randomUUID(),
-        type: "image",
-        x: basePoint.x,
-        y: cursorY,
-        width: page.width,
-        height: page.height,
-        rotation: 0,
-        zIndex: nextZ,
-        src: asset.path,
-        sourceType: "pdf-page",
-        pageNumber: page.pageNumber,
-        importInfo: {
-          importedAt: timestamp,
-          pdfScale: pdfImportDialog.quality === "custom" ? pdfImportDialog.customScale : PDF_IMPORT_SCALES[pdfImportDialog.quality],
-        },
-        createdAt: timestamp,
-        updatedAt: timestamp,
-      };
-      insertedImages.push(image);
-      nextZ += 1;
-      cursorY += page.height + spacing;
+    if (!pdfImportDialog || pdfImportLoading) return;
+    setPdfImportLoading(true);
+    try {
+      const pages = await importPdfPages(pdfImportDialog.file, pdfImportDialog.quality, pdfImportDialog.customScale);
+      const basePoint = screenToWorld(importAnchorRef.current, viewport);
+      let cursorY = basePoint.y;
+      const spacing = 40;
+      let nextZ = nextZIndex(elements);
+      const insertedImages: ImageCanvasElement[] = [];
+      for (const page of pages) {
+        const assetName = `${pdfImportDialog.file.name.replace(/\.[^.]+$/, "")}-page-${String(page.pageNumber).padStart(3, "0")}-${crypto.randomUUID()}.png`;
+        const asset = await storage.writePngAsset({
+          subjectId: props.subjectId,
+          noteId: props.noteId,
+          bytes: page.bytes,
+          fileName: assetName,
+        });
+        const timestamp = nowIso();
+        const image: ImageCanvasElement = {
+          id: crypto.randomUUID(),
+          type: "image",
+          x: basePoint.x,
+          y: cursorY,
+          width: page.width,
+          height: page.height,
+          rotation: 0,
+          zIndex: nextZ,
+          src: asset.path,
+          sourceType: "pdf-page",
+          pageNumber: page.pageNumber,
+          importInfo: {
+            importedAt: timestamp,
+            pdfScale: pdfImportDialog.quality === "custom" ? pdfImportDialog.customScale : PDF_IMPORT_SCALES[pdfImportDialog.quality],
+          },
+          createdAt: timestamp,
+          updatedAt: timestamp,
+        };
+        insertedImages.push(image);
+        nextZ += 1;
+        cursorY += page.height + spacing;
+      }
+      if (insertedImages.length > 0) {
+        setElements((current) => [...current, ...insertedImages]);
+      }
+      closePdfImportDialog();
+    } finally {
+      setPdfImportLoading(false);
     }
-    if (insertedImages.length > 0) {
-      setElements((current) => [...current, ...insertedImages]);
-    }
-    closePdfImportDialog();
   }
 
   useEffect(() => {
@@ -1285,6 +1358,7 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
         const nextBounds = buildResizeBounds(interaction.startBounds, interaction.handle, currentWorld, interaction.preserveAspect || shiftPressed);
         setElements((current) =>
           current.map((element) => (element.id === interaction.elementId ? resizeElement(element, nextBounds) : element)),
+          { recordHistory: false },
         );
       } else if (interaction.kind === "draw") {
         if (interaction.tool === "freehand") {
@@ -1358,6 +1432,13 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
         const after = canvasStateRef.current;
         if (serializeCanvasState(before) !== serializeCanvasState(after)) {
           canvasHistoryRef.current.record(createSnapshotCanvasCommand("move elements", before, after));
+        }
+      }
+      if (interaction?.kind === "resize") {
+        const before = interaction.startSnapshot;
+        const after = canvasStateRef.current;
+        if (serializeCanvasState(before) !== serializeCanvasState(after)) {
+          canvasHistoryRef.current.record(createSnapshotCanvasCommand("resize element", before, after));
         }
       }
       if (interaction?.kind === "draw") {
@@ -1740,7 +1821,10 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
     const rect = event.currentTarget.getBoundingClientRect();
     const pointer = { x: event.clientX - rect.left, y: event.clientY - rect.top };
     const hit = elementAtPointer(pointer);
-    setContextMenu(hit ? { kind: "element", x: event.clientX, y: event.clientY, elementId: hit.id } : { kind: "canvas", x: event.clientX, y: event.clientY });
+    const position = clampFloatingRect({ x: event.clientX, y: event.clientY }, CONTEXT_MENU_WIDTH, CONTEXT_MENU_HEIGHT);
+    setContextMenu(hit
+      ? { kind: "element", x: position.left, y: position.top, elementId: hit.id }
+      : { kind: "canvas", x: position.left, y: position.top });
   }
 
   function zoomWheel(event: React.WheelEvent<HTMLDivElement>) {
@@ -1841,15 +1925,21 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
   const selectedElements = elements.filter((element) => selectedIds.includes(element.id));
   const activeElement = selectedIds.length === 1 ? elements.find((element) => element.id === selectedIds[0]) ?? null : null;
   const inspectorAnchor = inspector && activeElement?.id === inspector.elementId ? inspector.anchor : null;
-  const inspectorPanelWidth = 340;
-  const inspectorPanelHeight = 560;
   const inspectorElement = inspectorAnchor && activeElement && interaction?.kind !== "resize" ? activeElement : null;
-  const inspectorStyle = inspectorAnchor
-    ? {
-        left: `${Math.min(Math.max(12, inspectorAnchor.x + 12), Math.max(12, window.innerWidth - inspectorPanelWidth - 12))}px`,
-        top: `${Math.min(Math.max(12, inspectorAnchor.y + 12), Math.max(12, window.innerHeight - inspectorPanelHeight - 12))}px`,
-        maxHeight: `calc(100vh - 24px)`,
-      }
+  const inspectorStyle: CSSProperties | null = inspectorAnchor
+    ? (() => {
+        const screenBounds = elementScreenBounds(inspectorElement ?? activeElement, viewport);
+        const preferredLeft = screenBounds.right + 12;
+        const preferredTop = inspectorAnchor.y - PROPERTY_PANEL_HEIGHT / 2;
+        const left = clamp(preferredLeft, 12, Math.max(12, window.innerWidth - PROPERTY_PANEL_WIDTH - 12));
+        const top = clamp(preferredTop, 12, Math.max(12, window.innerHeight - PROPERTY_PANEL_HEIGHT - 12));
+        return {
+          left: `${left}px`,
+          top: `${top}px`,
+          maxHeight: `calc(100vh - 24px)`,
+          boxSizing: "border-box",
+        } satisfies CSSProperties;
+      })()
     : null;
   const draftElement = pendingLine
     ? createLineElement(screenToWorld(pendingLine.start, viewport), screenToWorld(pendingLine.current, viewport))
@@ -1879,6 +1969,26 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
         topRight: { x: imageImportDialog.imageSize.width, y: 0 },
         bottomRight: { x: imageImportDialog.imageSize.width, y: imageImportDialog.imageSize.height },
         bottomLeft: { x: 0, y: imageImportDialog.imageSize.height },
+      }
+    : null;
+  const imageImportOverlayPoints = imageImportDialog && imageImportPoints && imageImportPreviewLayout
+    ? {
+        topLeft: {
+          x: (imageImportPoints.topLeft.x / Math.max(1, imageImportDialog.imageSize.width)) * imageImportPreviewLayout.width,
+          y: (imageImportPoints.topLeft.y / Math.max(1, imageImportDialog.imageSize.height)) * imageImportPreviewLayout.height,
+        },
+        topRight: {
+          x: (imageImportPoints.topRight.x / Math.max(1, imageImportDialog.imageSize.width)) * imageImportPreviewLayout.width,
+          y: (imageImportPoints.topRight.y / Math.max(1, imageImportDialog.imageSize.height)) * imageImportPreviewLayout.height,
+        },
+        bottomRight: {
+          x: (imageImportPoints.bottomRight.x / Math.max(1, imageImportDialog.imageSize.width)) * imageImportPreviewLayout.width,
+          y: (imageImportPoints.bottomRight.y / Math.max(1, imageImportDialog.imageSize.height)) * imageImportPreviewLayout.height,
+        },
+        bottomLeft: {
+          x: (imageImportPoints.bottomLeft.x / Math.max(1, imageImportDialog.imageSize.width)) * imageImportPreviewLayout.width,
+          y: (imageImportPoints.bottomLeft.y / Math.max(1, imageImportDialog.imageSize.height)) * imageImportPreviewLayout.height,
+        },
       }
     : null;
 
@@ -2017,7 +2127,7 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
                 top: `${draftElement.y}px`,
                 width: `${draftElement.width}px`,
                 height: `${draftElement.height}px`,
-                zIndex: draftElement.zIndex,
+                zIndex: 1900,
                 ...elementSurfaceStyle(draftElement),
                 ...(draftElement.type === "text" ? textBoxStyle(draftElement) : {}),
               }}
@@ -2092,6 +2202,7 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
                         startViewport: viewport,
                         startElement: activeElement,
                         startBounds: elementBounds(activeElement),
+                        startSnapshot: structuredClone(canvasStateRef.current),
                       });
                       try {
                         event.currentTarget.setPointerCapture(event.pointerId);
@@ -2407,17 +2518,47 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
       <Modal open={imageImportDialog !== null} title="画像を取り込む" onClose={closeImageImportDialog}>
         {imageImportDialog && (
           <div className="modal-body">
-            <div className="modal-preview modal-preview-cropper">
+            <div ref={imageImportCropperRef} className="modal-preview modal-preview-cropper">
               <img ref={imageImportPreviewRef} src={imageImportDialog.previewUrl} alt={imageImportDialog.file.name} />
-              {imageImportPoints && ([
+              {imageImportPreviewLayout && imageImportOverlayPoints && (
+                <div
+                  className="image-transform-overlay"
+                  style={{
+                    left: `${imageImportPreviewLayout.left}px`,
+                    top: `${imageImportPreviewLayout.top}px`,
+                    width: `${imageImportPreviewLayout.width}px`,
+                    height: `${imageImportPreviewLayout.height}px`,
+                  }}
+                  aria-hidden="true"
+                >
+                  <svg viewBox={`0 0 ${Math.max(1, imageImportPreviewLayout.width)} ${Math.max(1, imageImportPreviewLayout.height)}`} preserveAspectRatio="none">
+                    <path
+                      d={`M0 0H${imageImportPreviewLayout.width}V${imageImportPreviewLayout.height}H0Z M${imageImportOverlayPoints.topLeft.x.toFixed(2)} ${imageImportOverlayPoints.topLeft.y.toFixed(2)} L${imageImportOverlayPoints.topRight.x.toFixed(2)} ${imageImportOverlayPoints.topRight.y.toFixed(2)} L${imageImportOverlayPoints.bottomRight.x.toFixed(2)} ${imageImportOverlayPoints.bottomRight.y.toFixed(2)} L${imageImportOverlayPoints.bottomLeft.x.toFixed(2)} ${imageImportOverlayPoints.bottomLeft.y.toFixed(2)} Z`}
+                      fill="rgba(0, 0, 0, 0.38)"
+                      fillRule="evenodd"
+                    />
+                    <path
+                      d={`M${imageImportOverlayPoints.topLeft.x.toFixed(2)} ${imageImportOverlayPoints.topLeft.y.toFixed(2)} L${imageImportOverlayPoints.topRight.x.toFixed(2)} ${imageImportOverlayPoints.topRight.y.toFixed(2)} L${imageImportOverlayPoints.bottomRight.x.toFixed(2)} ${imageImportOverlayPoints.bottomRight.y.toFixed(2)} L${imageImportOverlayPoints.bottomLeft.x.toFixed(2)} ${imageImportOverlayPoints.bottomLeft.y.toFixed(2)} Z`}
+                      fill="none"
+                      stroke="rgba(255,255,255,0.9)"
+                      strokeWidth="2"
+                      strokeLinejoin="round"
+                    />
+                    {(Object.entries(imageImportOverlayPoints) as Array<[ImageImportCorner, Point]>).map(([name, point]) => (
+                      <circle key={name} cx={point.x} cy={point.y} r="5" fill="#2f5d62" stroke="#fff" strokeWidth="2" />
+                    ))}
+                  </svg>
+                </div>
+              )}
+              {imageImportPoints && imageImportPreviewLayout && ([
                 ["topLeft", "TL"],
                 ["topRight", "TR"],
                 ["bottomRight", "BR"],
                 ["bottomLeft", "BL"],
               ] as const).map(([name, label]) => {
                 const point = imageImportPoints[name];
-                const left = `${(point.x / Math.max(1, imageImportDialog.imageSize.width)) * 100}%`;
-                const top = `${(point.y / Math.max(1, imageImportDialog.imageSize.height)) * 100}%`;
+                const left = `${imageImportPreviewLayout.left + (point.x / Math.max(1, imageImportDialog.imageSize.width)) * imageImportPreviewLayout.width}px`;
+                const top = `${imageImportPreviewLayout.top + (point.y / Math.max(1, imageImportDialog.imageSize.height)) * imageImportPreviewLayout.height}px`;
                 return (
                   <button
                     key={name}
@@ -2570,7 +2711,7 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
         )}
       </Modal>
 
-      <Modal open={pdfImportDialog !== null} title="PDFを取り込む" onClose={closePdfImportDialog}>
+      <Modal open={pdfImportDialog !== null} title="PDFを取り込む" onClose={pdfImportLoading ? () => undefined : closePdfImportDialog}>
         {pdfImportDialog && (
           <div className="modal-body">
             <p className="muted">{pdfImportDialog.file.name}</p>
@@ -2578,6 +2719,7 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
               <span>quality</span>
               <select
                 value={pdfImportDialog.quality}
+                disabled={pdfImportLoading}
                 onChange={(event) => setPdfImportDialog((current) => current ? {
                   ...current,
                   quality: event.target.value as PdfImportQuality,
@@ -2595,6 +2737,7 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
                 <span>scale</span>
                 <PropertyNumberField
                   value={pdfImportDialog.customScale}
+                  disabled={pdfImportLoading}
                   onCommit={(next) => setPdfImportDialog((current) => current ? {
                     ...current,
                     customScale: Math.max(0.1, next),
@@ -2604,21 +2747,22 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
             )}
             <p className="muted">all pages are converted to PNG and placed vertically.</p>
             <div className="modal-actions">
-              <button type="button" onClick={closePdfImportDialog}>キャンセル</button>
-              <button type="button" onClick={() => void confirmPdfImport()}>取り込む</button>
+              <button type="button" onClick={closePdfImportDialog} disabled={pdfImportLoading}>キャンセル</button>
+              <button type="button" disabled={pdfImportLoading} onClick={() => void confirmPdfImport()}>
+                {pdfImportLoading ? (
+                  <>
+                    <span className="button-spinner" aria-hidden="true" />
+                    <span>読み込み中...</span>
+                  </>
+                ) : (
+                  <span>取り込む</span>
+                )}
+              </button>
             </div>
           </div>
         )}
       </Modal>
 
-      <footer className="editor-footer">
-        <span>viewport: {viewport.x.toFixed(0)}, {viewport.y.toFixed(0)}, {viewport.scale.toFixed(2)}</span>
-        <span>selected: {selectedIds.length}</span>
-        <span>grid mode: use_grid: {grid.mode === "assisted" ? "enable" : "disable"}</span>
-        <span>tool: {tool}</span>
-        <span>save: {saveStatus}{dirty ? " / dirty" : ""}{saveError ? ` / ${saveError}` : ""}</span>
-        {appConfig.mode === "local-edit" && <span>drag to move selected demo elements</span>}
-      </footer>
       {loadError ? <p className="error">{loadError}</p> : null}
     </main>
   );

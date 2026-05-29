@@ -8,12 +8,12 @@
   "canvas": {
     "type": "infinite",
     "viewport": {
-      "x": 0,
-      "y": 0,
-      "scale": 1
+      "x": 687.6451946964424,
+      "y": -2563.534890962226,
+      "scale": 1.1912948483455643
     },
     "grid": {
-      "mode": "assisted",
+      "mode": "free",
       "snapStep": 10,
       "gridSize": 100,
       "visible": true
@@ -111,6 +111,263 @@
         "importInfo": {
           "importedAt": "2026-05-29T17:44:21.500Z"
         }
+      },
+      {
+        "id": "1e804e04-66c6-4e69-a4fd-6e59be98277b",
+        "type": "image",
+        "x": 572,
+        "y": 256,
+        "width": 218,
+        "height": 240,
+        "rotation": 0,
+        "zIndex": 6,
+        "createdAt": "2026-05-29T18:59:07.121Z",
+        "updatedAt": "2026-05-29T18:59:07.121Z",
+        "src": "assets/images/HI7ZZSPaYAA1mUR-749eb1a3-a0db-4eef-8f1c-84badec1c4ca.png",
+        "sourceType": "image",
+        "importInfo": {
+          "importedAt": "2026-05-29T18:59:07.121Z",
+          "transparentBackgroundApplied": false,
+          "perspectiveTransformApplied": true
+        }
+      },
+      {
+        "id": "77886d81-0c3e-4f14-ae25-7c3d7290fe26",
+        "type": "image",
+        "x": 744,
+        "y": 252,
+        "width": 218,
+        "height": 240,
+        "rotation": 0,
+        "zIndex": 7,
+        "createdAt": "2026-05-29T18:59:23.159Z",
+        "updatedAt": "2026-05-29T18:59:23.159Z",
+        "src": "assets/images/HI7ZZSPaYAA1mUR-bd9a6f30-867e-430b-b54c-2aa3c1cdcef1.png",
+        "sourceType": "image",
+        "importInfo": {
+          "importedAt": "2026-05-29T18:59:23.159Z",
+          "transparentBackgroundApplied": false,
+          "perspectiveTransformApplied": true
+        }
+      },
+      {
+        "id": "ecd25081-f46b-47f5-ab81-5ccaf0988e76",
+        "type": "image",
+        "x": -92.42649070028381,
+        "y": 948.4237983588544,
+        "width": 684.517362479956,
+        "height": 484.5277292613466,
+        "rotation": 0,
+        "zIndex": 8,
+        "createdAt": "2026-05-29T18:59:47.495Z",
+        "updatedAt": "2026-05-29T19:07:25.280Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２－１最適化問題）-page-001-490ce0e6-769a-48a0-83e2-7fef6299868f.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 1,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:59:47.495Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "e1f99a4d-999c-4ace-ae30-bfc2c47d2807",
+        "type": "image",
+        "x": -92.50422397620373,
+        "y": 1459.9259005917847,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 9,
+        "locked": true,
+        "createdAt": "2026-05-29T18:59:47.509Z",
+        "updatedAt": "2026-05-29T18:59:47.509Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２－１最適化問題）-page-002-16779468-93b4-49d2-aaae-5e155540594e.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 2,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:59:47.509Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "2ddd4730-9058-4b9a-98ba-503f66f1b40e",
+        "type": "image",
+        "x": -92.42649070028381,
+        "y": 2108.951527620201,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 10,
+        "createdAt": "2026-05-29T18:59:47.524Z",
+        "updatedAt": "2026-05-29T18:59:47.524Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２－１最適化問題）-page-003-22bbe710-4e6b-4ccd-9c61-427238734f79.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 3,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:59:47.524Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "d8d059e0-f904-4a9e-98aa-5c79db363669",
+        "type": "image",
+        "x": -92.42649070028381,
+        "y": 2744.951527620201,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 11,
+        "createdAt": "2026-05-29T18:59:47.537Z",
+        "updatedAt": "2026-05-29T18:59:47.537Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２－１最適化問題）-page-004-bf585ca1-94ee-4d40-a3ed-301c1f5f76e4.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 4,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:59:47.537Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "568fab28-4d81-4549-bc96-da151a4d4e30",
+        "type": "text",
+        "x": 506.3075735059398,
+        "y": 1123.0316157026286,
+        "width": 280,
+        "height": 140,
+        "rotation": 0,
+        "zIndex": 12,
+        "createdAt": "2026-05-29T19:00:19.381Z",
+        "updatedAt": "2026-05-29T19:01:13.493Z",
+        "content": "$\\int_{0}^{\\infin} \\frac a x dx$",
+        "format": "markdown-tex",
+        "style": {
+          "fontSize": 18,
+          "color": "#1f1a17",
+          "backgroundColor": "rgba(255,255,255,0.96)",
+          "padding": 12
+        }
+      },
+      {
+        "id": "e024fe5b-69fe-4ec6-9933-9ce33e7cbf9f",
+        "type": "text",
+        "x": -243.57192235521904,
+        "y": 856.595197439412,
+        "width": 280,
+        "height": 140,
+        "rotation": 0,
+        "zIndex": 13,
+        "createdAt": "2026-05-29T19:01:21.965Z",
+        "updatedAt": "2026-05-29T19:01:21.965Z",
+        "content": "テキスト",
+        "format": "markdown-tex",
+        "style": {
+          "fontSize": 18,
+          "color": "#1f1a17",
+          "backgroundColor": "rgba(255,255,255,0.96)",
+          "padding": 12
+        }
+      },
+      {
+        "id": "e2331cdb-6e8b-44f2-827d-d015c0f18e91",
+        "type": "line",
+        "x": -17.266657177137834,
+        "y": 1925.4909148856993,
+        "width": 648.0180287018118,
+        "height": 8.350747792549328,
+        "rotation": 0,
+        "zIndex": 14,
+        "createdAt": "2026-05-29T19:01:48.958Z",
+        "updatedAt": "2026-05-29T19:01:48.958Z",
+        "start": {
+          "x": -17.266657177137834,
+          "y": 1925.4909148856993
+        },
+        "end": {
+          "x": 630.7513715246739,
+          "y": 1933.8416626782487
+        },
+        "stroke": "#2f5d62",
+        "strokeWidth": 6
+      },
+      {
+        "id": "30b2bb73-7cc6-4cff-a6f2-35c4b9899b68",
+        "type": "rect",
+        "x": -264.5794191550344,
+        "y": 1966.5796061659635,
+        "width": 129.4365907845114,
+        "height": 75.99180491219704,
+        "rotation": 0,
+        "zIndex": 15,
+        "createdAt": "2026-05-29T19:02:17.745Z",
+        "updatedAt": "2026-05-29T19:02:17.745Z",
+        "fill": "#f7d7a6",
+        "stroke": "#2f5d62",
+        "strokeWidth": 2
+      },
+      {
+        "id": "8ab005ce-be2c-4086-bad3-96bb5181b34c",
+        "type": "rect",
+        "x": -39.95903680986461,
+        "y": 1774.6904503938192,
+        "width": 432.8857803055068,
+        "height": 119.51172306144417,
+        "rotation": 0,
+        "zIndex": 16,
+        "createdAt": "2026-05-29T19:02:51.487Z",
+        "updatedAt": "2026-05-29T19:02:51.487Z",
+        "fill": "#f7d7a6",
+        "stroke": "#2f5d62",
+        "strokeWidth": 2
+      },
+      {
+        "id": "9a5860a8-4bed-4219-b438-c67e8ea788f8",
+        "type": "text",
+        "x": 235.9643422398287,
+        "y": 846.6846745480444,
+        "width": 280,
+        "height": 140,
+        "rotation": 0,
+        "zIndex": 17,
+        "createdAt": "2026-05-29T19:07:16.767Z",
+        "updatedAt": "2026-05-29T19:07:16.767Z",
+        "content": "テキスト",
+        "format": "markdown-tex",
+        "style": {
+          "fontSize": 18,
+          "color": "#1f1a17",
+          "backgroundColor": "rgba(255,255,255,0.96)",
+          "padding": 12
+        }
+      },
+      {
+        "id": "795d9b14-3f80-40bd-bded-dd1f2c1449ec",
+        "type": "rect",
+        "x": 16.246863931659618,
+        "y": 1178.159120650454,
+        "width": 414.67483947072617,
+        "height": 105.76726674759402,
+        "rotation": 0,
+        "zIndex": 18,
+        "createdAt": "2026-05-29T19:07:31.558Z",
+        "updatedAt": "2026-05-29T19:07:31.558Z",
+        "fill": "#f7d7a6",
+        "stroke": "#2f5d62",
+        "strokeWidth": 2
+      },
+      {
+        "id": "8eced3d5-f113-451b-9aef-e97aca6865e2",
+        "type": "rect",
+        "x": 117.81701691942867,
+        "y": 1038.8149438242585,
+        "width": 257.70278485326503,
+        "height": 99.891307483839,
+        "rotation": 0,
+        "zIndex": 19,
+        "createdAt": "2026-05-29T19:09:27.033Z",
+        "updatedAt": "2026-05-29T19:09:27.033Z",
+        "fill": "#f7d7a6",
+        "stroke": "#2f5d62",
+        "strokeWidth": 2
       }
     ]
   }

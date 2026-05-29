@@ -8,340 +8,1509 @@
   "canvas": {
     "type": "infinite",
     "viewport": {
-      "x": -154,
-      "y": -85,
-      "scale": 1
+      "x": -804.1438598500861,
+      "y": -3570.7976983158233,
+      "scale": 1.104613272098855
     },
     "grid": {
       "mode": "assisted",
       "snapStep": 10,
       "gridSize": 100,
-      "visible": true
+      "visible": false
     },
     "elements": [
       {
-        "id": "demo-rect-1",
-        "type": "rect",
-        "x": -500,
-        "y": 150,
-        "width": 354.18021473028534,
-        "height": 160.12089539496986,
+        "id": "d6aa5b59-2667-41c8-81e7-d1c2ec1282ef",
+        "type": "image",
+        "x": 320,
+        "y": 2880,
+        "width": 218,
+        "height": 240,
         "rotation": 0,
-        "zIndex": 2,
-        "createdAt": "2026-05-30T00:00:00.000Z",
-        "updatedAt": "2026-05-29T17:03:13.085Z",
-        "fill": "#f7d7a6",
-        "stroke": "#2f5d62",
-        "strokeWidth": 2
-      },
-      {
-        "id": "demo-ellipse-1",
-        "type": "ellipse",
-        "x": 171,
-        "y": 277,
-        "width": 308.64285714285717,
-        "height": 174.00000000000003,
-        "rotation": 0,
-        "zIndex": 3,
-        "createdAt": "2026-05-30T00:00:00.000Z",
-        "updatedAt": "2026-05-29T16:39:23.603Z",
-        "fill": "#cfe8ff",
-        "stroke": "#2f5d62",
-        "strokeWidth": 2
-      },
-      {
-        "id": "9389f4ea-506f-484d-b213-10a6b15338cd",
-        "type": "line",
-        "x": -4,
-        "y": -41,
-        "width": 65,
-        "height": 1,
-        "rotation": 0,
-        "zIndex": 5,
-        "createdAt": "2026-05-29T16:32:35.149Z",
-        "updatedAt": "2026-05-29T16:40:51.312Z",
-        "start": {
-          "x": -4,
-          "y": -41
-        },
-        "end": {
-          "x": -4,
-          "y": -41
-        },
-        "stroke": "#2f5d62",
-        "strokeWidth": 3
-      },
-      {
-        "id": "dc71fe79-4402-42c0-a51a-4814358db7cd",
-        "type": "line",
-        "x": 244,
-        "y": 466,
-        "width": 1,
-        "height": 1,
-        "rotation": 0,
-        "zIndex": 6,
-        "createdAt": "2026-05-29T16:32:38.718Z",
-        "updatedAt": "2026-05-29T16:32:38.718Z",
-        "start": {
-          "x": 244,
-          "y": 466
-        },
-        "end": {
-          "x": 244,
-          "y": 466
-        },
-        "stroke": "#2f5d62",
-        "strokeWidth": 3
-      },
-      {
-        "id": "1021ebbc-d873-4d6a-a48b-644a48431a30",
-        "type": "ellipse",
-        "x": 50,
-        "y": -249,
-        "width": 178,
-        "height": 70,
-        "rotation": 0,
-        "zIndex": 8,
-        "createdAt": "2026-05-29T16:36:14.680Z",
-        "updatedAt": "2026-05-29T16:40:03.462Z",
-        "fill": "#cfe8ff",
-        "stroke": "#2f5d62",
-        "strokeWidth": 2
-      },
-      {
-        "id": "e7523772-db27-4eb0-8ea4-0762a291df8a",
-        "type": "rect",
-        "x": 156,
-        "y": -315,
-        "width": 212,
-        "height": 83,
-        "rotation": 0,
-        "zIndex": 9,
-        "createdAt": "2026-05-29T16:39:44.285Z",
-        "updatedAt": "2026-05-29T16:39:57.280Z",
-        "fill": "#f7d7a6",
-        "stroke": "#2f5d62",
-        "strokeWidth": 2
-      },
-      {
-        "id": "0756d667-7eb1-4401-aeb1-527d05b4ee1c",
-        "type": "ellipse",
-        "x": 339,
-        "y": -178,
-        "width": 162,
-        "height": 79,
-        "rotation": 0,
-        "zIndex": 10,
-        "createdAt": "2026-05-29T16:40:05.465Z",
-        "updatedAt": "2026-05-29T16:40:10.914Z",
-        "fill": "#cfe8ff",
-        "stroke": "#2f5d62",
-        "strokeWidth": 2
-      },
-      {
-        "id": "546472c3-8ce2-460a-b6c3-fedf84f5cbb1",
-        "type": "line",
-        "x": 54,
-        "y": 24,
-        "width": 378,
-        "height": 1,
-        "rotation": 0,
-        "zIndex": 11,
-        "createdAt": "2026-05-29T16:40:28.587Z",
-        "updatedAt": "2026-05-29T16:40:35.126Z",
-        "start": {
-          "x": 54,
-          "y": 24
-        },
-        "end": {
-          "x": 54,
-          "y": 24
-        },
-        "stroke": "#2f5d62",
-        "strokeWidth": 3
-      },
-      {
-        "id": "73689152-1efd-40a7-b14e-7c677cc5de6f",
-        "type": "text",
-        "x": -760,
-        "y": -380,
-        "width": 280,
-        "height": 140,
-        "rotation": 2,
-        "zIndex": 12,
-        "createdAt": "2026-05-29T17:00:16.311Z",
-        "updatedAt": "2026-05-29T17:11:07.197Z",
-        "content": "テキスト $←\n戻る\nNOTE EDITOR\nノート\nブラウザ教科 / local-edit\n\n￼\n↖\n選択\n￼\nT\n文字\n￼\n▭\n四角\n￼\n◯\n丸\n￼\n／\n線\n￼\n✎\nお絵描き\n￼\n▦\n補助をやめる\n￼\n×\n選択解除\n￼\n↺\n初期化\nノート名をクリックして開いた canvas です。\n\nテキスト\n\n∫\n∫\n￼\nviewport: 555, 200, 0.74\nselected: 0\ngrid: assisted / visible\ntool: select\nsave: saved\ndrag to move selected demo elements\n←\n戻る\nNOTE EDITOR\nノート\nブラウザ教科 / local-edit\n\n￼\n↖\n選択\n￼\nT\n文字\n￼\n▭\n四角\n￼\n◯\n丸\n￼\n／\n線\n￼\n✎\nお絵描き\n￼\n▦\n補助をやめる\n￼\n×\n選択解除\n￼\n↺\n初期化\nノート名をクリックして開いた canvas です。\n\nテキスト\n\n∫\n∫\n￼\nviewport: 555, 200, 0.74\nselected: 0\ngrid: assisted / visible\ntool: select\nsave: saved\ndrag to move selected demo elements\n",
-        "format": "markdown-tex",
-        "style": {
-          "fontSize": 50,
-          "color": "#ff0000",
-          "backgroundColor": "#ffffff",
-          "padding": 12,
-          "borderColor": "#ff0000"
+        "zIndex": 1,
+        "createdAt": "2026-05-29T18:52:13.070Z",
+        "updatedAt": "2026-05-29T18:52:13.070Z",
+        "src": "assets/images/HI7ZZSPaYAA1mUR.png",
+        "sourceType": "image",
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:13.070Z",
+          "transparentBackgroundApplied": false,
+          "perspectiveTransformApplied": true
         }
       },
       {
-        "id": "a81bd825-6db6-4376-959b-6764cda1c2b7",
-        "type": "rect",
-        "x": -180,
-        "y": 60,
-        "width": 191.97642056309428,
-        "height": 147.18192243170563,
+        "id": "24344424-949e-4a39-87ea-d263538c4d7a",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 3275.1713108079116,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 2,
+        "createdAt": "2026-05-29T18:52:55.277Z",
+        "updatedAt": "2026-05-29T18:52:55.277Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-001.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 1,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.277Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "015e08c7-ee9a-4dae-a78b-2536ed1d4a4c",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 3911.1713108079116,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 3,
+        "createdAt": "2026-05-29T18:52:55.295Z",
+        "updatedAt": "2026-05-29T18:52:55.295Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-002.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 2,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.295Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "cd61b881-469a-405b-8c82-4c748c58e1a8",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 4547.171310807911,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 4,
+        "createdAt": "2026-05-29T18:52:55.312Z",
+        "updatedAt": "2026-05-29T18:52:55.312Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-003.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 3,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.312Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "8f8667f2-2b30-453a-b31a-ccd8b712c532",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 5183.171310807911,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 5,
+        "createdAt": "2026-05-29T18:52:55.325Z",
+        "updatedAt": "2026-05-29T18:52:55.325Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-004.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 4,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.325Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "c70de4de-7bf3-4379-a148-80ccffd3382b",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 5819.171310807911,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 6,
+        "createdAt": "2026-05-29T18:52:55.332Z",
+        "updatedAt": "2026-05-29T18:52:55.332Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-005.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 5,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.332Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "bb75232e-037e-48c7-8ba3-741568deed63",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 6455.171310807911,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 7,
+        "createdAt": "2026-05-29T18:52:55.346Z",
+        "updatedAt": "2026-05-29T18:52:55.346Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-006.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 6,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.346Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "d876ef86-606b-4a3f-a52b-393eec3ae4c3",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 7091.171310807911,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 8,
+        "createdAt": "2026-05-29T18:52:55.363Z",
+        "updatedAt": "2026-05-29T18:52:55.363Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-007.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 7,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.363Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "a9e5734e-18a9-4a50-aaed-d008733b83c1",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 7727.171310807911,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 9,
+        "createdAt": "2026-05-29T18:52:55.373Z",
+        "updatedAt": "2026-05-29T18:52:55.373Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-008.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 8,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.373Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "f5f6c706-abbd-4358-bf93-2662d16f97a3",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 8363.171310807911,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 10,
+        "createdAt": "2026-05-29T18:52:55.383Z",
+        "updatedAt": "2026-05-29T18:52:55.383Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-009.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 9,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.383Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "c54985b4-e298-486c-9521-3f68b9940d31",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 8999.171310807911,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 11,
+        "createdAt": "2026-05-29T18:52:55.393Z",
+        "updatedAt": "2026-05-29T18:52:55.393Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-010.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 10,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.393Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "b5480ee9-abe8-4737-9717-cebd2b1dcfb7",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 9635.171310807911,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 12,
+        "createdAt": "2026-05-29T18:52:55.402Z",
+        "updatedAt": "2026-05-29T18:52:55.402Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-011.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 11,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.402Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "e0135a0a-2f45-4893-aa82-5c9e41edd12d",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 10271.171310807911,
+        "width": 842,
+        "height": 596,
         "rotation": 0,
         "zIndex": 13,
-        "createdAt": "2026-05-29T17:00:32.694Z",
-        "updatedAt": "2026-05-29T17:00:32.694Z",
-        "fill": "#ff9900",
-        "stroke": "#2f5d62",
-        "strokeWidth": 10
+        "createdAt": "2026-05-29T18:52:55.418Z",
+        "updatedAt": "2026-05-29T18:52:55.418Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-012.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 12,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.418Z",
+          "pdfScale": 1
+        }
       },
       {
-        "id": "6c9d415a-1d0a-40b3-8f51-814ef75a5365",
-        "type": "ellipse",
-        "x": -450,
-        "y": 170,
-        "width": 249.99999999999997,
-        "height": 250,
+        "id": "4be80085-24b5-472e-960a-6b5f1d85b4bf",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 10907.171310807911,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 14,
+        "createdAt": "2026-05-29T18:52:55.434Z",
+        "updatedAt": "2026-05-29T18:52:55.434Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-013.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 13,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.434Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "9b486bc4-30de-499e-81fb-9c1e5265ba10",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 11543.171310807911,
+        "width": 842,
+        "height": 596,
         "rotation": 0,
         "zIndex": 15,
-        "createdAt": "2026-05-29T17:00:41.469Z",
-        "updatedAt": "2026-05-29T17:00:41.469Z",
-        "fill": "#cfe8ff",
-        "stroke": "#2f5d62",
-        "strokeWidth": 2
+        "createdAt": "2026-05-29T18:52:55.445Z",
+        "updatedAt": "2026-05-29T18:52:55.445Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-014.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 14,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.445Z",
+          "pdfScale": 1
+        }
       },
       {
-        "id": "919aba92-818a-46ed-a338-8045544da4cc",
-        "type": "ellipse",
-        "x": 162.47309104113205,
-        "y": 588.5283121933209,
-        "width": 277.2903800823842,
-        "height": 211.9290762058223,
+        "id": "3e7aa4fb-c459-4d62-ac4f-12dc536fd796",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 12179.171310807911,
+        "width": 842,
+        "height": 596,
         "rotation": 0,
         "zIndex": 16,
-        "createdAt": "2026-05-29T17:00:46.937Z",
-        "updatedAt": "2026-05-29T17:00:46.937Z",
+        "createdAt": "2026-05-29T18:52:55.456Z",
+        "updatedAt": "2026-05-29T18:52:55.456Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-015.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 15,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.456Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "19994965-1a01-4fd7-bf52-06a2764cb71e",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 12815.171310807911,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 17,
+        "createdAt": "2026-05-29T18:52:55.469Z",
+        "updatedAt": "2026-05-29T18:52:55.469Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-016.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 16,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.469Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "a8c9c11f-0963-4baa-ab7d-7cdeaa359196",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 13451.171310807911,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 18,
+        "createdAt": "2026-05-29T18:52:55.484Z",
+        "updatedAt": "2026-05-29T18:52:55.484Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-017.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 17,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.484Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "9b58f114-112b-4bac-845f-f63da849c1ac",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 14087.171310807911,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 19,
+        "createdAt": "2026-05-29T18:52:55.496Z",
+        "updatedAt": "2026-05-29T18:52:55.496Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-018.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 18,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.496Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "79ba11ae-509b-4626-b0db-84e4486eebec",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 14723.171310807911,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 20,
+        "createdAt": "2026-05-29T18:52:55.509Z",
+        "updatedAt": "2026-05-29T18:52:55.509Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-019.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 19,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.509Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "a178ac50-c011-489c-8750-de955c7ba9fd",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 15359.171310807911,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 21,
+        "createdAt": "2026-05-29T18:52:55.519Z",
+        "updatedAt": "2026-05-29T18:52:55.519Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-020.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 20,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.519Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "87d85818-1cce-4e12-8f69-df26ea38c1da",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 15995.171310807911,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 22,
+        "createdAt": "2026-05-29T18:52:55.531Z",
+        "updatedAt": "2026-05-29T18:52:55.531Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-021.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 21,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.531Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "65f7a967-2481-46f6-94c9-50db12225b3a",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 16631.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 23,
+        "createdAt": "2026-05-29T18:52:55.542Z",
+        "updatedAt": "2026-05-29T18:52:55.542Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-022.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 22,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.542Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "f6f599a1-9016-41f6-8216-3a6a7d6eb919",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 17267.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 24,
+        "createdAt": "2026-05-29T18:52:55.557Z",
+        "updatedAt": "2026-05-29T18:52:55.557Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-023.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 23,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.557Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "2e9834bb-88c6-4e59-be61-c0bad70f4ec2",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 17903.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 25,
+        "createdAt": "2026-05-29T18:52:55.572Z",
+        "updatedAt": "2026-05-29T18:52:55.572Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-024.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 24,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.572Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "6835589c-cf15-4d1f-bfe8-c6f61083bb4e",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 18539.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 26,
+        "createdAt": "2026-05-29T18:52:55.586Z",
+        "updatedAt": "2026-05-29T18:52:55.586Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-025.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 25,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.586Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "aa43d667-76d1-45c0-8257-6f0d8683c427",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 19175.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 27,
+        "createdAt": "2026-05-29T18:52:55.606Z",
+        "updatedAt": "2026-05-29T18:52:55.606Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-026.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 26,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.606Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "9b3e93c4-20d5-40f4-a8d9-feb9b1711d71",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 19811.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 28,
+        "createdAt": "2026-05-29T18:52:55.624Z",
+        "updatedAt": "2026-05-29T18:52:55.624Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-027.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 27,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.624Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "7ec54f1b-68c7-4f87-95f0-6b096dba30e2",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 20447.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 29,
+        "createdAt": "2026-05-29T18:52:55.634Z",
+        "updatedAt": "2026-05-29T18:52:55.634Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-028.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 28,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.634Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "91fba72d-e8d6-45b3-a244-584e09607964",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 21083.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 30,
+        "createdAt": "2026-05-29T18:52:55.643Z",
+        "updatedAt": "2026-05-29T18:52:55.643Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-029.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 29,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.643Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "4c539c34-287a-41e0-9281-09772b26649d",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 21719.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 31,
+        "createdAt": "2026-05-29T18:52:55.656Z",
+        "updatedAt": "2026-05-29T18:52:55.656Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-030.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 30,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.656Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "cf03e5dc-b2e5-4b7d-91f2-f6ed00060fd4",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 22355.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 32,
+        "createdAt": "2026-05-29T18:52:55.669Z",
+        "updatedAt": "2026-05-29T18:52:55.669Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-031.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 31,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.669Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "9616bb94-1684-4bc9-8d48-ca2a3535ff4e",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 22991.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 33,
+        "createdAt": "2026-05-29T18:52:55.685Z",
+        "updatedAt": "2026-05-29T18:52:55.685Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-032.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 32,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.685Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "b6a2dfc3-e94e-4658-bd69-23e6623c7333",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 23627.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 34,
+        "createdAt": "2026-05-29T18:52:55.697Z",
+        "updatedAt": "2026-05-29T18:52:55.697Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-033.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 33,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.697Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "ce0b4256-03fa-4ce8-9acb-df3ae512b44c",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 24263.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 35,
+        "createdAt": "2026-05-29T18:52:55.711Z",
+        "updatedAt": "2026-05-29T18:52:55.711Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-034.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 34,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.711Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "7127008b-7ce5-40ea-9135-3ff7287fe8e2",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 24899.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 36,
+        "createdAt": "2026-05-29T18:52:55.724Z",
+        "updatedAt": "2026-05-29T18:52:55.724Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-035.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 35,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.724Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "80405366-8d35-4dde-9826-6bd855861f17",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 25535.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 37,
+        "createdAt": "2026-05-29T18:52:55.733Z",
+        "updatedAt": "2026-05-29T18:52:55.733Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-036.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 36,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.733Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "6395a8de-9a1e-4aff-b64b-dac341328c8c",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 26171.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 38,
+        "createdAt": "2026-05-29T18:52:55.749Z",
+        "updatedAt": "2026-05-29T18:52:55.749Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-037.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 37,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.749Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "577f7037-e923-4ce8-9cfa-c3ae4581264d",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 26807.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 39,
+        "createdAt": "2026-05-29T18:52:55.770Z",
+        "updatedAt": "2026-05-29T18:52:55.770Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-038.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 38,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.770Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "73143b5d-d364-465c-a74e-58319acd55bd",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 27443.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 40,
+        "createdAt": "2026-05-29T18:52:55.784Z",
+        "updatedAt": "2026-05-29T18:52:55.784Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-039.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 39,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.784Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "da61a77e-36bd-4028-b705-8724c2314a22",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 28079.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 41,
+        "createdAt": "2026-05-29T18:52:55.797Z",
+        "updatedAt": "2026-05-29T18:52:55.797Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-040.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 40,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.797Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "97d1d91b-4f33-4c6c-b321-4071fb53fcc8",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 28715.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 42,
+        "createdAt": "2026-05-29T18:52:55.810Z",
+        "updatedAt": "2026-05-29T18:52:55.810Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-041.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 41,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.810Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "0f7afc6a-8745-41f4-a33b-59cd5fc8bd36",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 29351.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 43,
+        "createdAt": "2026-05-29T18:52:55.822Z",
+        "updatedAt": "2026-05-29T18:52:55.822Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-042.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 42,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.822Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "f0cab505-b0ac-4827-abff-7c9de407fde7",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 29987.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 44,
+        "createdAt": "2026-05-29T18:52:55.836Z",
+        "updatedAt": "2026-05-29T18:52:55.836Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-043.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 43,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.836Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "249acbd8-d865-424a-9870-38ea56662f18",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 30623.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 45,
+        "createdAt": "2026-05-29T18:52:55.849Z",
+        "updatedAt": "2026-05-29T18:52:55.849Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-044.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 44,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.849Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "9d4f85c7-1c46-40fd-b28d-24e1186b2ee5",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 31259.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 46,
+        "createdAt": "2026-05-29T18:52:55.863Z",
+        "updatedAt": "2026-05-29T18:52:55.863Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-045.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 45,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.863Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "86720523-dde8-4d64-a19d-005db28e19d5",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 31895.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 47,
+        "createdAt": "2026-05-29T18:52:55.876Z",
+        "updatedAt": "2026-05-29T18:52:55.876Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-046.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 46,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.876Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "2fd64286-7c2c-40ec-af59-ba2e25b8d24c",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 32531.171310807913,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 48,
+        "createdAt": "2026-05-29T18:52:55.889Z",
+        "updatedAt": "2026-05-29T18:52:55.889Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-047.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 47,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.889Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "42fc0f1a-35e1-46f7-ae67-94132a9c4c8d",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 33167.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 49,
+        "createdAt": "2026-05-29T18:52:55.905Z",
+        "updatedAt": "2026-05-29T18:52:55.905Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-048.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 48,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.905Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "5b29a086-d2d8-40a7-a05d-934056e908e7",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 33803.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 50,
+        "createdAt": "2026-05-29T18:52:55.918Z",
+        "updatedAt": "2026-05-29T18:52:55.918Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-049.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 49,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.918Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "1d3a7dd0-536b-4788-bcdd-bcc74ff21921",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 34439.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 51,
+        "createdAt": "2026-05-29T18:52:55.931Z",
+        "updatedAt": "2026-05-29T18:52:55.931Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-050.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 50,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.931Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "9b1932a1-c289-44f7-92c8-85f1e5d6fc1d",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 35075.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 52,
+        "createdAt": "2026-05-29T18:52:55.944Z",
+        "updatedAt": "2026-05-29T18:52:55.944Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-051.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 51,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.944Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "bac7997c-0cef-4847-9c47-e244a53c526b",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 35711.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 53,
+        "createdAt": "2026-05-29T18:52:55.957Z",
+        "updatedAt": "2026-05-29T18:52:55.957Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-052.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 52,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.957Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "a7a2268c-ee77-422b-a51a-ac9a559aa935",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 36347.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 54,
+        "createdAt": "2026-05-29T18:52:55.969Z",
+        "updatedAt": "2026-05-29T18:52:55.969Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-053.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 53,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.969Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "17f71a43-a501-455b-a064-10ebde2b1529",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 36983.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 55,
+        "createdAt": "2026-05-29T18:52:55.983Z",
+        "updatedAt": "2026-05-29T18:52:55.983Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-054.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 54,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.983Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "4a680e54-34c9-469c-8ac6-2e87e487c6a0",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 37619.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 56,
+        "createdAt": "2026-05-29T18:52:55.996Z",
+        "updatedAt": "2026-05-29T18:52:55.996Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-055.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 55,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:55.996Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "35bdf719-31e4-4aac-9657-1e40dfb1f381",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 38255.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 57,
+        "createdAt": "2026-05-29T18:52:56.010Z",
+        "updatedAt": "2026-05-29T18:52:56.010Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-056.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 56,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:56.010Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "44a63580-c2d9-4347-b8ce-3bc27bd06531",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 38891.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 58,
+        "createdAt": "2026-05-29T18:52:56.022Z",
+        "updatedAt": "2026-05-29T18:52:56.022Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-057.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 57,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:56.022Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "f20a3a52-bf0b-4549-b108-f7bae4888105",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 39527.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 59,
+        "createdAt": "2026-05-29T18:52:56.045Z",
+        "updatedAt": "2026-05-29T18:52:56.045Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-058.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 58,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:56.045Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "36eb2243-da68-4d46-b0a7-157e35415e11",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 40163.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 60,
+        "createdAt": "2026-05-29T18:52:56.056Z",
+        "updatedAt": "2026-05-29T18:52:56.056Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-059.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 59,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:56.056Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "1d3980e3-56c6-4516-8a08-df99a45efcce",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 40799.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 61,
+        "createdAt": "2026-05-29T18:52:56.064Z",
+        "updatedAt": "2026-05-29T18:52:56.064Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-060.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 60,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:56.064Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "2b563e28-f84f-4374-a777-a5bf8d76e322",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 41435.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 62,
+        "createdAt": "2026-05-29T18:52:56.079Z",
+        "updatedAt": "2026-05-29T18:52:56.079Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-061.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 61,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:56.079Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "d39acc18-5cc8-456b-88c4-b02389877a67",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 42071.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 63,
+        "createdAt": "2026-05-29T18:52:56.093Z",
+        "updatedAt": "2026-05-29T18:52:56.093Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-062.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 62,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:56.093Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "81acdcf2-5df7-4e03-8c60-8d643b7d0512",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 42707.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 64,
+        "createdAt": "2026-05-29T18:52:56.109Z",
+        "updatedAt": "2026-05-29T18:52:56.109Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-063.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 63,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:56.109Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "b4216e01-21ad-4160-ba5a-5dfd3390a94e",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 43343.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 65,
+        "createdAt": "2026-05-29T18:52:56.122Z",
+        "updatedAt": "2026-05-29T18:52:56.122Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-064.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 64,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:56.122Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "400b89db-3046-42f1-8276-ecec6e802c5e",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 43979.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 66,
+        "createdAt": "2026-05-29T18:52:56.136Z",
+        "updatedAt": "2026-05-29T18:52:56.136Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-065.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 65,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:56.136Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "a0cc91f2-7090-4204-81d4-f1d6d02519a8",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 44615.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 67,
+        "createdAt": "2026-05-29T18:52:56.153Z",
+        "updatedAt": "2026-05-29T18:52:56.153Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-066.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 66,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:56.153Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "de665cf5-ac01-4188-9750-0d0ed3267c8d",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 45251.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 68,
+        "createdAt": "2026-05-29T18:52:56.171Z",
+        "updatedAt": "2026-05-29T18:52:56.171Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-067.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 67,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:56.171Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "16226643-6bda-49b9-8f8e-e685646aeafe",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 45887.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 69,
+        "createdAt": "2026-05-29T18:52:56.193Z",
+        "updatedAt": "2026-05-29T18:52:56.193Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-068.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 68,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:56.193Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "cabc6c08-2888-4947-b085-815c1285d54e",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 46523.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 70,
+        "createdAt": "2026-05-29T18:52:56.217Z",
+        "updatedAt": "2026-05-29T18:52:56.217Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-069.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 69,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:56.217Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "c8fea135-8695-4811-a574-504f54c287a6",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 47159.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 71,
+        "createdAt": "2026-05-29T18:52:56.234Z",
+        "updatedAt": "2026-05-29T18:52:56.234Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-070.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 70,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:56.234Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "06f86948-2abf-40b2-b11e-a8cd673227ae",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 47795.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 72,
+        "createdAt": "2026-05-29T18:52:56.258Z",
+        "updatedAt": "2026-05-29T18:52:56.258Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-071.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 71,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:56.258Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "e073d3c8-d255-4c06-86f7-0cecbb6c343a",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 48431.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 73,
+        "createdAt": "2026-05-29T18:52:56.280Z",
+        "updatedAt": "2026-05-29T18:52:56.280Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-072.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 72,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:56.280Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "bc43844a-a5f1-4074-8ea0-08e3ae1337dd",
+        "type": "image",
+        "x": 623.8779464786411,
+        "y": 49067.17131080791,
+        "width": 842,
+        "height": 596,
+        "rotation": 0,
+        "zIndex": 74,
+        "createdAt": "2026-05-29T18:52:56.296Z",
+        "updatedAt": "2026-05-29T18:52:56.296Z",
+        "src": "assets/images/データ構造とアルゴリズムⅡ（２）まとめ-page-073.png",
+        "sourceType": "pdf-page",
+        "pageNumber": 73,
+        "importInfo": {
+          "importedAt": "2026-05-29T18:52:56.296Z",
+          "pdfScale": 1
+        }
+      },
+      {
+        "id": "aad082e3-2f37-4e9d-b282-a28254eb523e",
+        "type": "text",
+        "x": 588.5714722717028,
+        "y": 3047.942463988898,
+        "width": 280,
+        "height": 140,
+        "rotation": 0,
+        "zIndex": 75,
+        "createdAt": "2026-05-29T18:53:02.352Z",
+        "updatedAt": "2026-05-29T18:53:02.352Z",
+        "content": "テキスト",
+        "format": "markdown-tex",
+        "style": {
+          "fontSize": 18,
+          "color": "#1f1a17",
+          "backgroundColor": "rgba(255,255,255,0.96)",
+          "padding": 12
+        }
+      },
+      {
+        "id": "0ddf1294-14dc-4855-b3d3-b8d768d07211",
+        "type": "text",
+        "x": 430,
+        "y": 3190,
+        "width": 280,
+        "height": 274.37780078868354,
+        "rotation": 0,
+        "zIndex": 76,
+        "createdAt": "2026-05-29T18:53:06.957Z",
+        "updatedAt": "2026-05-29T18:53:32.109Z",
+        "content": "# MDもかける！\n- $\\int$ MDにtexを埋め込める！",
+        "format": "markdown-tex",
+        "style": {
+          "fontSize": 18,
+          "color": "#1f1a17",
+          "backgroundColor": "rgba(255,255,255,0.96)",
+          "padding": 12
+        }
+      },
+      {
+        "id": "69e4111f-1dc9-4c7e-9361-18b2e88e2285",
+        "type": "rect",
+        "x": 820,
+        "y": 2670,
+        "width": 250,
+        "height": 250,
+        "rotation": 0,
+        "zIndex": 77,
+        "createdAt": "2026-05-29T18:53:38.907Z",
+        "updatedAt": "2026-05-29T18:53:38.907Z",
+        "fill": "#f7d7a6",
+        "stroke": "#2f5d62",
+        "strokeWidth": 2
+      },
+      {
+        "id": "8b941489-a4a6-497e-8901-d8a354f29e0b",
+        "type": "ellipse",
+        "x": 1067.402710631392,
+        "y": 2673.9865561194606,
+        "width": 250,
+        "height": 250,
+        "rotation": 0,
+        "zIndex": 78,
+        "createdAt": "2026-05-29T18:53:42.290Z",
+        "updatedAt": "2026-05-29T18:53:42.290Z",
         "fill": "#cfe8ff",
         "stroke": "#2f5d62",
         "strokeWidth": 2
       },
       {
-        "id": "89f4d747-0ba2-4a18-8e06-c64f26c9f6c6",
+        "id": "b8c36d3d-8302-4b3b-aa97-ec96c780727f",
         "type": "image",
-        "x": -980,
-        "y": 380,
-        "width": 1696,
-        "height": 732,
+        "x": 950,
+        "y": 2710,
+        "width": 260,
+        "height": 580,
         "rotation": 0,
-        "zIndex": 18,
-        "createdAt": "2026-05-29T17:00:53.829Z",
-        "updatedAt": "2026-05-29T17:00:53.829Z",
-        "src": "assets/images/freehand-5be74e1e-e67f-4715-bddb-b2596d0a4351.png",
+        "zIndex": 79,
+        "createdAt": "2026-05-29T18:53:44.914Z",
+        "updatedAt": "2026-05-29T18:53:44.914Z",
+        "src": "assets/images/freehand-bd35ec1b-f237-4ae0-a4bb-b0092ebd97ed.png",
         "sourceType": "image",
         "originalFileName": "freehand.png",
         "importInfo": {
-          "importedAt": "2026-05-29T17:00:53.829Z"
-        }
-      },
-      {
-        "id": "fd4da39b-e069-42b6-9487-532f61980b91",
-        "type": "rect",
-        "x": -325.4668526355825,
-        "y": -684.0539832210308,
-        "width": 250,
-        "height": 250,
-        "rotation": 0,
-        "zIndex": 19,
-        "createdAt": "2026-05-29T17:11:15.315Z",
-        "updatedAt": "2026-05-29T17:11:15.315Z",
-        "fill": "#f7d7a6",
-        "stroke": "#2f5d62",
-        "strokeWidth": 2
-      },
-      {
-        "id": "1806c5c8-6d52-426b-ad07-67bb09ff9eca",
-        "type": "rect",
-        "x": 80,
-        "y": -571.2926442113925,
-        "width": 81.25357219066348,
-        "height": 2.719702442302605,
-        "rotation": 0,
-        "zIndex": 20,
-        "createdAt": "2026-05-29T17:11:21.330Z",
-        "updatedAt": "2026-05-29T17:11:55.696Z",
-        "fill": "#f7d7a6",
-        "stroke": "#2f5d62",
-        "strokeWidth": 2
-      },
-      {
-        "id": "5c183907-2769-4143-aafc-e41257110052",
-        "type": "ellipse",
-        "x": -310,
-        "y": -410,
-        "width": 305.860212413123,
-        "height": 250,
-        "rotation": 0,
-        "zIndex": 21,
-        "createdAt": "2026-05-29T17:11:50.716Z",
-        "updatedAt": "2026-05-29T17:11:51.945Z",
-        "fill": "#cfe8ff",
-        "stroke": "#2f5d62",
-        "strokeWidth": 50
-      },
-      {
-        "id": "bc5ff4e7-a6b5-4189-8331-776542a0b266",
-        "type": "rect",
-        "x": -110,
-        "y": -200,
-        "width": 250,
-        "height": 250,
-        "rotation": 0,
-        "zIndex": 0,
-        "createdAt": "2026-05-29T17:22:29.276Z",
-        "updatedAt": "2026-05-29T17:22:29.276Z",
-        "fill": "#123456",
-        "stroke": "#2f5d62",
-        "strokeWidth": 200
-      },
-      {
-        "id": "722c4b81-189b-49b1-bf1a-efe7b55bcb5d",
-        "type": "text",
-        "x": 351,
-        "y": 32,
-        "width": 280,
-        "height": 140,
-        "rotation": 0,
-        "zIndex": 22,
-        "createdAt": "2026-05-29T17:37:23.687Z",
-        "updatedAt": "2026-05-29T17:37:33.956Z",
-        "content": "# テキスト\n- aa\n",
-        "format": "markdown-tex",
-        "style": {
-          "fontSize": 18,
-          "color": "#1f1a17",
-          "backgroundColor": "rgba(255,255,255,0.96)",
-          "padding": 12
-        }
-      },
-      {
-        "id": "722c4b81-189b-49b1-bf1a-efe7b55bcb5d-copy-1780076328527",
-        "type": "text",
-        "x": 550,
-        "y": 270,
-        "width": 280,
-        "height": 140,
-        "rotation": 0,
-        "zIndex": 41,
-        "createdAt": "2026-05-29T17:37:23.687Z",
-        "updatedAt": "2026-05-29T17:37:33.956Z",
-        "content": "# テキスト\n- aa\n",
-        "format": "markdown-tex",
-        "style": {
-          "fontSize": 18,
-          "color": "#1f1a17",
-          "backgroundColor": "rgba(255,255,255,0.96)",
-          "padding": 12
+          "importedAt": "2026-05-29T18:53:44.914Z"
         }
       }
     ]
