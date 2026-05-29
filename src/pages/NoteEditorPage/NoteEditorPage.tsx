@@ -32,7 +32,13 @@ import type { PdfImportQuality } from "../../features/notes/model/noteTypes";
 type Interaction =
   | { kind: "pan"; startPointer: Point; startViewport: CanvasViewport }
   | { kind: "select"; startPointer: Point; currentPointer: Point }
-  | { kind: "move"; startPointer: Point; startViewport: CanvasViewport; startPositions: Record<string, { x: number; y: number }> }
+  | {
+      kind: "move";
+      startPointer: Point;
+      startViewport: CanvasViewport;
+      startPositions: Record<string, { x: number; y: number }>;
+      startSnapshot: CanvasEditorState;
+    }
   | {
       kind: "resize";
       elementId: string;
@@ -76,8 +82,6 @@ type ContextMenuState =
   | { kind: "element"; x: number; y: number; elementId: string }
   | null;
 
-type PointOption = { x: number; y: number };
-
 type ImageImportDialogState = {
   file: File;
   previewUrl: string;
@@ -90,6 +94,13 @@ type PdfImportDialogState = {
   file: File;
   quality: PdfImportQuality;
   customScale: number;
+};
+
+type ImageImportCorner = "topLeft" | "topRight" | "bottomRight" | "bottomLeft";
+
+type ImageImportDragState = {
+  corner: ImageImportCorner;
+  pointerId: number;
 };
 
 type TouchGesture =
@@ -632,6 +643,8 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
   const canvasHistoryRef = useRef(new HistoryManager());
   const imageFileInputRef = useRef<HTMLInputElement | null>(null);
   const pdfFileInputRef = useRef<HTMLInputElement | null>(null);
+  const imageImportPreviewRef = useRef<HTMLImageElement | null>(null);
+  const imageImportDragRef = useRef<ImageImportDragState | null>(null);
   const importAnchorRef = useRef<Point>({ x: 0, y: 0 });
   useEffect(() => {
     canvasStateRef.current = canvasState;
@@ -658,9 +671,16 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
     }
   }
 
-  function setElements(action: CanvasSetStateAction<CanvasElement[]>) {
+  function setElements(action: CanvasSetStateAction<CanvasElement[]>, options?: { recordHistory?: boolean }) {
     const current = canvasStateRef.current;
     const nextElements = typeof action === "function" ? action(current.elements) : action;
+    if (options?.recordHistory === false) {
+      commitCanvasState({
+        ...current,
+        elements: nextElements,
+      });
+      return;
+    }
     runCanvasCommand(
       createSnapshotCanvasCommand("update elements", current, {
         ...current,
@@ -669,9 +689,16 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
     );
   }
 
-  function setGrid(action: CanvasSetStateAction<CanvasGrid>) {
+  function setGrid(action: CanvasSetStateAction<CanvasGrid>, options?: { recordHistory?: boolean }) {
     const current = canvasStateRef.current;
     const nextGrid = typeof action === "function" ? action(current.grid) : action;
+    if (options?.recordHistory === false) {
+      commitCanvasState({
+        ...current,
+        grid: nextGrid,
+      });
+      return;
+    }
     runCanvasCommand(
       createSnapshotCanvasCommand("update grid", current, {
         ...current,
@@ -735,12 +762,82 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
   }
 
   function closeImageImportDialog() {
+    imageImportDragRef.current = null;
     if (imageImportDialog?.previewUrl) URL.revokeObjectURL(imageImportDialog.previewUrl);
     setImageImportDialog(null);
   }
 
   function closePdfImportDialog() {
     setPdfImportDialog(null);
+  }
+
+  function updateImageImportCorner(corner: ImageImportCorner, nextPoint: Point) {
+    setImageImportDialog((current) => {
+      if (!current) return current;
+      const points = current.perspective.points ?? {
+        topLeft: { x: 0, y: 0 },
+        topRight: { x: current.imageSize.width, y: 0 },
+        bottomRight: { x: current.imageSize.width, y: current.imageSize.height },
+        bottomLeft: { x: 0, y: current.imageSize.height },
+      };
+      return {
+        ...current,
+        perspective: {
+          ...current.perspective,
+          enabled: true,
+          points: {
+            ...points,
+            [corner]: {
+              x: clamp(nextPoint.x, 0, current.imageSize.width),
+              y: clamp(nextPoint.y, 0, current.imageSize.height),
+            },
+          },
+        },
+      };
+    });
+  }
+
+  function imagePointFromClient(clientX: number, clientY: number) {
+    const image = imageImportPreviewRef.current;
+    if (!image) return null;
+    const rect = image.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return null;
+    const point = {
+      x: clamp(((clientX - rect.left) / rect.width) * image.naturalWidth, 0, image.naturalWidth),
+      y: clamp(((clientY - rect.top) / rect.height) * image.naturalHeight, 0, image.naturalHeight),
+    };
+    return point;
+  }
+
+  function startImageImportCornerDrag(corner: ImageImportCorner, event: React.PointerEvent<HTMLButtonElement>) {
+    event.preventDefault();
+    event.stopPropagation();
+    imageImportDragRef.current = { corner, pointerId: event.pointerId };
+    try {
+      event.currentTarget.setPointerCapture(event.pointerId);
+    } catch {
+      // ignore
+    }
+    const point = imagePointFromClient(event.clientX, event.clientY);
+    if (point) updateImageImportCorner(corner, point);
+  }
+
+  function moveImageImportCornerDrag(event: React.PointerEvent<HTMLButtonElement>) {
+    const drag = imageImportDragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    const point = imagePointFromClient(event.clientX, event.clientY);
+    if (point) updateImageImportCorner(drag.corner, point);
+  }
+
+  function stopImageImportCornerDrag(event: React.PointerEvent<HTMLButtonElement>) {
+    const drag = imageImportDragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    imageImportDragRef.current = null;
+    try {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    } catch {
+      // ignore
+    }
   }
 
   async function confirmImageImport() {
@@ -1181,6 +1278,7 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
             }
             return { ...element, x: snappedX, y: snappedY };
           }),
+          { recordHistory: false },
         );
       } else if (interaction.kind === "resize") {
         const currentWorld = screenToWorld(currentPointer, interaction.startViewport);
@@ -1254,6 +1352,13 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
         };
         const nextSelected = elements.filter((element) => rectsIntersect(selection, element)).map((element) => element.id);
         setSelectedIds(nextSelected);
+      }
+      if (interaction?.kind === "move") {
+        const before = interaction.startSnapshot;
+        const after = canvasStateRef.current;
+        if (serializeCanvasState(before) !== serializeCanvasState(after)) {
+          canvasHistoryRef.current.record(createSnapshotCanvasCommand("move elements", before, after));
+        }
       }
       if (interaction?.kind === "draw") {
         const startWorld = screenToWorld(interaction.startPointer, viewport);
@@ -1608,6 +1713,7 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
           kind: "move",
           startPointer: pointer,
           startViewport: viewport,
+          startSnapshot: structuredClone(canvasStateRef.current),
           startPositions: Object.fromEntries(
             elements
               .filter((element) => nextSelectedIds.includes(element.id))
@@ -1735,11 +1841,14 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
   const selectedElements = elements.filter((element) => selectedIds.includes(element.id));
   const activeElement = selectedIds.length === 1 ? elements.find((element) => element.id === selectedIds[0]) ?? null : null;
   const inspectorAnchor = inspector && activeElement?.id === inspector.elementId ? inspector.anchor : null;
+  const inspectorPanelWidth = 340;
+  const inspectorPanelHeight = 560;
   const inspectorElement = inspectorAnchor && activeElement && interaction?.kind !== "resize" ? activeElement : null;
   const inspectorStyle = inspectorAnchor
     ? {
-        left: `${Math.min(Math.max(12, inspectorAnchor.x + 12), Math.max(12, window.innerWidth - 360))}px`,
-        top: `${Math.min(Math.max(12, inspectorAnchor.y + 12), Math.max(12, window.innerHeight - 420))}px`,
+        left: `${Math.min(Math.max(12, inspectorAnchor.x + 12), Math.max(12, window.innerWidth - inspectorPanelWidth - 12))}px`,
+        top: `${Math.min(Math.max(12, inspectorAnchor.y + 12), Math.max(12, window.innerHeight - inspectorPanelHeight - 12))}px`,
+        maxHeight: `calc(100vh - 24px)`,
       }
     : null;
   const draftElement = pendingLine
@@ -2298,8 +2407,33 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
       <Modal open={imageImportDialog !== null} title="画像を取り込む" onClose={closeImageImportDialog}>
         {imageImportDialog && (
           <div className="modal-body">
-            <div className="modal-preview">
-              <img src={imageImportDialog.previewUrl} alt={imageImportDialog.file.name} />
+            <div className="modal-preview modal-preview-cropper">
+              <img ref={imageImportPreviewRef} src={imageImportDialog.previewUrl} alt={imageImportDialog.file.name} />
+              {imageImportPoints && ([
+                ["topLeft", "TL"],
+                ["topRight", "TR"],
+                ["bottomRight", "BR"],
+                ["bottomLeft", "BL"],
+              ] as const).map(([name, label]) => {
+                const point = imageImportPoints[name];
+                const left = `${(point.x / Math.max(1, imageImportDialog.imageSize.width)) * 100}%`;
+                const top = `${(point.y / Math.max(1, imageImportDialog.imageSize.height)) * 100}%`;
+                return (
+                  <button
+                    key={name}
+                    type="button"
+                    className={`crop-handle crop-handle-${name}`}
+                    style={{ left, top }}
+                    aria-label={`${label} corner`}
+                    onPointerDown={(event) => startImageImportCornerDrag(name, event)}
+                    onPointerMove={moveImageImportCornerDrag}
+                    onPointerUp={stopImageImportCornerDrag}
+                    onPointerCancel={stopImageImportCornerDrag}
+                  >
+                    <span className="crop-handle-dot" />
+                  </button>
+                );
+              })}
             </div>
             <p className="muted">{imageImportDialog.file.name}</p>
             <label>
@@ -2383,48 +2517,51 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
                 />
               </label>
             </div>
-            <div className="modal-corners">
-              {imageImportPoints && (["topLeft", "topRight", "bottomRight", "bottomLeft"] as const).map((name) => {
-                const point = imageImportPoints[name];
-                return (
-                  <div key={name} className="modal-corner-row">
-                    <strong>{name}</strong>
-                    <label>
-                      <span>x</span>
-                      <PropertyNumberField
-                        value={point.x}
-                        onCommit={(next) => setImageImportDialog((current) => current ? {
-                          ...current,
-                          perspective: {
-                            ...current.perspective,
-                            points: {
-                              ...(current.perspective.points ?? imageImportPoints),
-                              [name]: { ...point, x: Math.max(0, next) },
+            <details className="modal-details">
+              <summary>角の数値調整</summary>
+              <div className="modal-corners">
+                {imageImportPoints && (["topLeft", "topRight", "bottomRight", "bottomLeft"] as const).map((name) => {
+                  const point = imageImportPoints[name];
+                  return (
+                    <div key={name} className="modal-corner-row">
+                      <strong>{name}</strong>
+                      <label>
+                        <span>x</span>
+                        <PropertyNumberField
+                          value={point.x}
+                          onCommit={(next) => setImageImportDialog((current) => current ? {
+                            ...current,
+                            perspective: {
+                              ...current.perspective,
+                              points: {
+                                ...(current.perspective.points ?? imageImportPoints),
+                                [name]: { ...point, x: Math.max(0, next) },
+                              },
                             },
-                          },
-                        } : current)}
-                      />
-                    </label>
-                    <label>
-                      <span>y</span>
-                      <PropertyNumberField
-                        value={point.y}
-                        onCommit={(next) => setImageImportDialog((current) => current ? {
-                          ...current,
-                          perspective: {
-                            ...current.perspective,
-                            points: {
-                              ...(current.perspective.points ?? imageImportPoints),
-                              [name]: { ...point, y: Math.max(0, next) },
+                          } : current)}
+                        />
+                      </label>
+                      <label>
+                        <span>y</span>
+                        <PropertyNumberField
+                          value={point.y}
+                          onCommit={(next) => setImageImportDialog((current) => current ? {
+                            ...current,
+                            perspective: {
+                              ...current.perspective,
+                              points: {
+                                ...(current.perspective.points ?? imageImportPoints),
+                                [name]: { ...point, y: Math.max(0, next) },
+                              },
                             },
-                          },
-                        } : current)}
-                      />
-                    </label>
-                  </div>
-                );
-              })}
-            </div>
+                          } : current)}
+                        />
+                      </label>
+                    </div>
+                  );
+                })}
+              </div>
+            </details>
             <div className="modal-actions">
               <button type="button" onClick={closeImageImportDialog}>キャンセル</button>
               <button type="button" onClick={() => void confirmImageImport()}>取り込む</button>

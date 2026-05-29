@@ -5,11 +5,15 @@ export class HistoryManager {
 
   private readonly future: CanvasCommand[] = [];
 
+  record(command: CanvasCommand) {
+    this.past.push(command);
+    this.future.length = 0;
+  }
+
   execute(command: CanvasCommand, state: CanvasEditorState) {
     const nextState = command.redo(state);
     if (nextState === state) return state;
-    this.past.push(command);
-    this.future.length = 0;
+    this.record(command);
     return nextState;
   }
 
