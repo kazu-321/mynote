@@ -560,7 +560,7 @@ function normalizeViewport(note: NoteData | null): CanvasViewport {
 }
 
 function normalizeGrid(note: NoteData | null): CanvasGrid {
-  return note?.canvas.grid ?? { mode: "free", snapStep: 10, gridSize: 100, visible: false };
+  return note?.canvas.grid ?? { mode: "free", snapStep: 10, gridSize: 100 };
 }
 
 function rectsIntersect(a: SelectionRect, element: CanvasElement) {
@@ -583,7 +583,7 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
   const [note, setNote] = useState<NoteData | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [viewport, setViewport] = useState<CanvasViewport>({ x: 0, y: 0, scale: 1 });
-  const [grid, setGrid] = useState<CanvasGrid>({ mode: "free", snapStep: 10, gridSize: 100, visible: false });
+  const [grid, setGrid] = useState<CanvasGrid>({ mode: "free", snapStep: 10, gridSize: 100 });
   const [elements, setElements] = useState<CanvasElement[]>(DEMO_ELEMENTS);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [interaction, setInteraction] = useState<Interaction>(null);
@@ -1053,7 +1053,7 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
   const sortedElements = useMemo(() => [...elements].sort((a, b) => a.zIndex - b.zIndex), [elements]);
 
   const gridStyle = useMemo(() => {
-    if (!grid.visible && grid.mode === "free") return { opacity: 0 };
+    if (grid.mode === "free") return { opacity: 0 };
     const step = Math.max(8, grid.gridSize * viewport.scale);
     const offsetX = ((viewport.x % step) + step) % step;
     const offsetY = ((viewport.y % step) + step) % step;
@@ -1064,7 +1064,7 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
       backgroundSize: `${step}px ${step}px`,
       backgroundPosition: `${offsetX}px ${offsetY}px`,
     } as const;
-  }, [grid.gridSize, grid.mode, grid.visible, viewport.scale, viewport.x, viewport.y]);
+  }, [grid.gridSize, grid.mode, viewport.scale, viewport.x, viewport.y]);
 
   function elementAtPointer(pointer: Point) {
     const world = screenToWorld(pointer, viewport);
@@ -1199,14 +1199,25 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
     if (event.button === 2) return;
     const rect = event.currentTarget.getBoundingClientRect();
     const pointer = { x: event.clientX - rect.left, y: event.clientY - rect.top };
-    try {
-      event.currentTarget.setPointerCapture(event.pointerId);
-    } catch {
-      // Ignore capture failures on unsupported browsers or detached nodes.
-    }
     const hit = elementAtPointer(pointer);
     setContextMenu(null);
+    if (appConfig.mode !== "local-edit") {
+      if (hit?.type === "text") return;
+      if (hit) return;
+      try {
+        event.currentTarget.setPointerCapture(event.pointerId);
+      } catch {
+        // Ignore capture failures on unsupported browsers or detached nodes.
+      }
+      setInteraction({ kind: "pan", startPointer: pointer, startViewport: viewport });
+      return;
+    }
     if (event.pointerType === "touch") {
+      try {
+        event.currentTarget.setPointerCapture(event.pointerId);
+      } catch {
+        // Ignore capture failures on unsupported browsers or detached nodes.
+      }
       event.preventDefault();
       touchPointersRef.current.set(event.pointerId, { point: pointer, pointerType: event.pointerType });
       const touchEntries = [...touchPointersRef.current.entries()].filter(([, tracked]) => tracked.pointerType === "touch");
@@ -1234,6 +1245,11 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
       return;
     }
     if (event.button === 1 || spacePressed) {
+      try {
+        event.currentTarget.setPointerCapture(event.pointerId);
+      } catch {
+        // Ignore capture failures on unsupported browsers or detached nodes.
+      }
       setInteraction({ kind: "pan", startPointer: pointer, startViewport: viewport });
       return;
     }
@@ -1242,6 +1258,11 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
     }
     if (tool !== "select") {
       event.preventDefault();
+      try {
+        event.currentTarget.setPointerCapture(event.pointerId);
+      } catch {
+        // Ignore capture failures on unsupported browsers or detached nodes.
+      }
       if (tool === "text") {
         const text = createTextElement(screenToWorld(pointer, viewport));
         setElements((current) => [...current, { ...text, zIndex: nextZIndex(current) }]);
@@ -1277,6 +1298,11 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
       return;
     }
     if (hit) {
+      try {
+        event.currentTarget.setPointerCapture(event.pointerId);
+      } catch {
+        // Ignore capture failures on unsupported browsers or detached nodes.
+      }
       const now = performance.now();
       const previousDown = lastElementPointerDownRef.current;
       lastElementPointerDownRef.current = { elementId: hit.id, at: now };
@@ -1305,6 +1331,11 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
         });
       }
     } else {
+      try {
+        event.currentTarget.setPointerCapture(event.pointerId);
+      } catch {
+        // Ignore capture failures on unsupported browsers or detached nodes.
+      }
       setSelectedIds([]);
       setInspector(null);
       setInteraction({ kind: "select", startPointer: pointer, currentPointer: pointer });
@@ -1312,6 +1343,7 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
   }
 
   function onCanvasContextMenu(event: React.MouseEvent<HTMLDivElement>) {
+    if (appConfig.mode !== "local-edit") return;
     event.preventDefault();
     event.stopPropagation();
     const rect = event.currentTarget.getBoundingClientRect();
@@ -1344,6 +1376,7 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
     const hit = elementAtPointer(pointer);
     setContextMenu(null);
     if (tool === "line" || pendingLine) return;
+    if (appConfig.mode !== "local-edit") return;
     if (hit && event.detail >= 2) {
       openInspectorForElement(hit.id, { x: event.clientX, y: event.clientY });
       return;
@@ -1351,6 +1384,7 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
   }
 
   function openInspectorAtEvent(event: ReactMouseEvent<HTMLDivElement>) {
+    if (appConfig.mode !== "local-edit") return;
     const rect = event.currentTarget.getBoundingClientRect();
     const pointer = { x: event.clientX - rect.left, y: event.clientY - rect.top };
     const hit = elementAtPointer(pointer);
@@ -1387,7 +1421,6 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
   }
 
   function startToolAtCanvasPoint(toolName: "line" | "freehand", clientPoint: Point) {
-    const worldPoint = screenToWorld(clientPoint, viewport);
     setTool(toolName);
     setSelectedIds([]);
     setInspector(null);
@@ -1403,7 +1436,6 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
         preserveAspect: false,
       });
     }
-    void worldPoint;
   }
 
   const selectionRect = interaction?.kind === "select"
@@ -1469,12 +1501,12 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
               <IconButton label="線" icon="／" className={tool === "line" ? "active" : ""} onClick={() => setTool("line")} />
               <IconButton label="お絵描き" icon="✎" className={tool === "freehand" ? "active" : ""} onClick={() => setTool("freehand")} />
               <IconButton
-                label={grid.mode === "assisted" ? "補助をやめる" : "補助を表示"}
+                label={grid.mode === "assisted" ? "グリッドモード: enable" : "グリッドモード: disable"}
                 icon={grid.mode === "assisted" ? "▦" : "◌"}
                 onClick={() => setGrid((current) => (
                   current.mode === "free"
-                    ? { ...current, mode: "assisted", visible: true }
-                    : { ...current, mode: "free", visible: false }
+                    ? { ...current, mode: "assisted" }
+                    : { ...current, mode: "free" }
                 ))}
               />
             </>
@@ -1514,7 +1546,7 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
             return (
               <div
                 key={element.id}
-                className={`canvas-element canvas-element-${element.type} ${isSelected ? "selected" : ""}`}
+                className={`canvas-element canvas-element-${element.type} ${isSelected ? "selected" : ""} ${appConfig.mode !== "local-edit" && element.type === "text" ? "readonly-text" : ""}`}
                 style={{
                   ...baseStyle,
                   ...elementSurfaceStyle(element),
@@ -1522,11 +1554,13 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
                 }}
                 draggable={false}
                 onContextMenu={(event) => {
+                  if (appConfig.mode !== "local-edit") return;
                   event.preventDefault();
                   event.stopPropagation();
                   setContextMenu({ kind: "element", x: event.clientX, y: event.clientY, elementId: element.id });
                 }}
                 onClick={(event) => {
+                  if (appConfig.mode !== "local-edit") return;
                   if (event.detail >= 2) {
                     event.preventDefault();
                     event.stopPropagation();
@@ -1534,6 +1568,7 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
                   }
                 }}
                 onDoubleClick={(event) => {
+                  if (appConfig.mode !== "local-edit") return;
                   event.preventDefault();
                   event.stopPropagation();
                   openInspectorForElement(element.id, { x: event.clientX, y: event.clientY });
@@ -1572,7 +1607,7 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
           })}
           {draftElement ? (
             <div
-              className={`canvas-element canvas-element-${draftElement.type} draft`}
+                className={`canvas-element canvas-element-${draftElement.type} draft`}
               style={{
                 left: `${draftElement.x}px`,
                 top: `${draftElement.y}px`,
@@ -1686,8 +1721,7 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
                     <button type="button" onClick={() => { addElementAtCanvasPoint("ellipse", { x: contextMenu.x, y: contextMenu.y }); setContextMenu(null); }}>丸を追加</button>
                     <button type="button" onClick={() => { startToolAtCanvasPoint("line", { x: contextMenu.x, y: contextMenu.y }); setContextMenu(null); }}>線を開始</button>
                     <button type="button" onClick={() => { startToolAtCanvasPoint("freehand", { x: contextMenu.x, y: contextMenu.y }); setContextMenu(null); }}>お絵描きを開始</button>
-                    <button type="button" onClick={() => { setGrid((current) => ({ ...current, visible: !current.visible })); setContextMenu(null); }}>グリッド表示切替</button>
-                    <button type="button" onClick={() => { setGrid((current) => ({ ...current, mode: current.mode === "free" ? "assisted" : "free", visible: true })); setContextMenu(null); }}>グリッドモード切替</button>
+                    <button type="button" onClick={() => { setGrid((current) => ({ ...current, mode: current.mode === "free" ? "assisted" : "free" })); setContextMenu(null); }}>グリッドモード切替</button>
                     <button type="button" onClick={() => { setViewport({ x: 0, y: 0, scale: 1 }); setContextMenu(null); }}>表示リセット</button>
                   </>
                 )}
@@ -1944,7 +1978,7 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
       <footer className="editor-footer">
         <span>viewport: {viewport.x.toFixed(0)}, {viewport.y.toFixed(0)}, {viewport.scale.toFixed(2)}</span>
         <span>selected: {selectedIds.length}</span>
-        <span>grid mode: use_grid: {grid.mode === "assisted" ? "enable" : "disable"} / visible: {grid.visible ? "yes" : "no"}</span>
+        <span>grid mode: use_grid: {grid.mode === "assisted" ? "enable" : "disable"}</span>
         <span>tool: {tool}</span>
         <span>save: {saveStatus}{saveError ? ` / ${saveError}` : ""}</span>
         {appConfig.mode === "local-edit" && <span>drag to move selected demo elements</span>}

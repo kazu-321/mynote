@@ -22,7 +22,7 @@ export interface NoteData {
   canvas: {
     type: "infinite";
     viewport: CanvasViewport;
-    grid: { mode: "free" | "assisted"; snapStep: number; gridSize: number; visible: boolean };
+    grid: { mode: "free" | "assisted"; snapStep: number; gridSize: number };
     elements: CanvasElement[];
   };
 }

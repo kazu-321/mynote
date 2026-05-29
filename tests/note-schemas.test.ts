@@ -57,7 +57,7 @@ const note = {
   canvas: {
     type: "infinite",
     viewport: { x: 0, y: 0, scale: 1 },
-    grid: { mode: "free", snapStep: 10, gridSize: 100, visible: false },
+    grid: { mode: "free", snapStep: 10, gridSize: 100 },
     elements: [
       {
         id: "element-a",
