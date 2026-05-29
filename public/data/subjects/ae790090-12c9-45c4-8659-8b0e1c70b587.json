@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "ae790090-12c9-45c4-8659-8b0e1c70b587",
+  "name": "実演-1780066158188",
+  "description": "",
+  "createdAt": "2026-05-29T14:49:19.450Z",
+  "updatedAt": "2026-05-29T14:50:58.357Z",
+  "noteOrder": [
+    "4b89ce39-4313-412d-b451-d55a9776a02f",
+    "fc7bd615-f038-4e51-ad14-019d598e32e6",
+    "6b4b7ee1-350a-46dc-bf53-33636ea168ad"
+  ],
+  "notes": [
+    {
+      "id": "4b89ce39-4313-412d-b451-d55a9776a02f",
+      "title": "ノートA",
+      "metaPath": "notes/ae790090-12c9-45c4-8659-8b0e1c70b587/4b89ce39-4313-412d-b451-d55a9776a02f/meta.json",
+      "notePath": "notes/ae790090-12c9-45c4-8659-8b0e1c70b587/4b89ce39-4313-412d-b451-d55a9776a02f/note.json"
+    },
+    {
+      "id": "fc7bd615-f038-4e51-ad14-019d598e32e6",
+      "title": "ノートB",
+      "metaPath": "notes/ae790090-12c9-45c4-8659-8b0e1c70b587/fc7bd615-f038-4e51-ad14-019d598e32e6/meta.json",
+      "notePath": "notes/ae790090-12c9-45c4-8659-8b0e1c70b587/fc7bd615-f038-4e51-ad14-019d598e32e6/note.json"
+    },
+    {
+      "id": "6b4b7ee1-350a-46dc-bf53-33636ea168ad",
+      "title": "実演ノートC",
+      "metaPath": "notes/ae790090-12c9-45c4-8659-8b0e1c70b587/6b4b7ee1-350a-46dc-bf53-33636ea168ad/meta.json",
+      "notePath": "notes/ae790090-12c9-45c4-8659-8b0e1c70b587/6b4b7ee1-350a-46dc-bf53-33636ea168ad/note.json"
+    }
+  ]
+}

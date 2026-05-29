@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "id": "4122aa60-cc6b-4f30-aa52-d9db8c6e5bbe",
+  "subjectId": "011d7dcd-74d9-4c7e-a792-5302d80fac47",
+  "title": "Canvas Demo",
+  "createdAt": "2026-05-29T15:27:34.592Z",
+  "updatedAt": "2026-05-29T15:27:34.592Z",
+  "canvas": {
+    "type": "infinite",
+    "viewport": {
+      "x": 0,
+      "y": 0,
+      "scale": 1
+    },
+    "grid": {
+      "mode": "assisted",
+      "snapStep": 10,
+      "gridSize": 100,
+      "visible": true
+    },
+    "elements": [
+      {
+        "id": "1e7ad8a1-63a6-45ac-b6e2-921f6d67040b",
+        "type": "text",
+        "x": 181,
+        "y": 199,
+        "width": 280,
+        "height": 140,
+        "rotation": 0,
+        "zIndex": 1,
+        "createdAt": "2026-05-29T17:38:55.388Z",
+        "updatedAt": "2026-05-29T17:38:55.388Z",
+        "content": "テキスト",
+        "format": "markdown-tex",
+        "style": {
+          "fontSize": 18,
+          "color": "#1f1a17",
+          "backgroundColor": "rgba(255,255,255,0.96)",
+          "padding": 12
+        }
+      },
+      {
+        "id": "7160de78-6036-47af-9d8b-798642374419",
+        "type": "text",
+        "x": 166,
+        "y": 572,
+        "width": 280,
+        "height": 140,
+        "rotation": 0,
+        "zIndex": 2,
+        "createdAt": "2026-05-29T17:44:09.277Z",
+        "updatedAt": "2026-05-29T17:44:09.277Z",
+        "content": "テキスト",
+        "format": "markdown-tex",
+        "style": {
+          "fontSize": 18,
+          "color": "#1f1a17",
+          "backgroundColor": "rgba(255,255,255,0.96)",
+          "padding": 12
+        }
+      },
+      {
+        "id": "e60238a4-45b7-4bd9-97ec-b1730331f7cd",
+        "type": "text",
+        "x": 210,
+        "y": 549,
+        "width": 280,
+        "height": 140,
+        "rotation": 0,
+        "zIndex": 3,
+        "createdAt": "2026-05-29T17:44:12.165Z",
+        "updatedAt": "2026-05-29T17:44:12.165Z",
+        "content": "テキスト",
+        "format": "markdown-tex",
+        "style": {
+          "fontSize": 18,
+          "color": "#1f1a17",
+          "backgroundColor": "rgba(255,255,255,0.96)",
+          "padding": 12
+        }
+      },
+      {
+        "id": "d2f7f3c9-70fb-4a6c-9cfd-e7ef353bc8d5",
+        "type": "rect",
+        "x": 103,
+        "y": 433,
+        "width": 96,
+        "height": 111,
+        "rotation": 0,
+        "zIndex": 4,
+        "createdAt": "2026-05-29T17:44:14.033Z",
+        "updatedAt": "2026-05-29T17:44:16.551Z",
+        "fill": "#f7d7a6",
+        "stroke": "#2f5d62",
+        "strokeWidth": 2
+      },
+      {
+        "id": "3fa86464-83f1-4c1d-802a-19bb39c4e00b",
+        "type": "image",
+        "x": -31,
+        "y": 316,
+        "width": 564,
+        "height": 444,
+        "rotation": 0,
+        "zIndex": 5,
+        "createdAt": "2026-05-29T17:44:21.500Z",
+        "updatedAt": "2026-05-29T17:44:21.500Z",
+        "src": "assets/images/freehand-cd88ade3-f0fa-4af1-9f2a-466a31e14da4.png",
+        "sourceType": "image",
+        "originalFileName": "freehand.png",
+        "importInfo": {
+          "importedAt": "2026-05-29T17:44:21.500Z"
+        }
+      }
+    ]
+  }
+}

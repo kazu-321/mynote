@@ -1,0 +1,36 @@
+{
+  "name": "mynote",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "server": "tsx server/index.ts",
+    "test": "node --import tsx --test tests/**/*.test.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "validate:data": "tsx scripts/validate-data.ts",
+    "check:assets": "tsx scripts/check-assets.ts",
+    "migrate:data": "tsx scripts/migrate-data.ts"
+  },
+  "dependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "express": "^5.1.0",
+    "katex": "^0.17.0",
+    "markdown-it": "^14.2.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "playwright": "^1.60.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3",
+    "vite": "^7.1.2"
+  }
+}

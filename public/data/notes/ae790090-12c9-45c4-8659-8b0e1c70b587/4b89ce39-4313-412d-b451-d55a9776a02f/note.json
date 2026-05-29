@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "4b89ce39-4313-412d-b451-d55a9776a02f",
+  "subjectId": "ae790090-12c9-45c4-8659-8b0e1c70b587",
+  "title": "ノートA",
+  "createdAt": "2026-05-29T14:49:23.399Z",
+  "updatedAt": "2026-05-29T14:49:23.399Z",
+  "canvas": {
+    "type": "infinite",
+    "viewport": {
+      "x": 0,
+      "y": 0,
+      "scale": 1
+    },
+    "grid": {
+      "mode": "free",
+      "snapStep": 10,
+      "gridSize": 100,
+      "visible": false
+    },
+    "elements": []
+  }
+}

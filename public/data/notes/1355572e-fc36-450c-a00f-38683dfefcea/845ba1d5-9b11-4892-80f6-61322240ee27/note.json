@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "845ba1d5-9b11-4892-80f6-61322240ee27",
+  "subjectId": "1355572e-fc36-450c-a00f-38683dfefcea",
+  "title": "UI確認ノートA",
+  "createdAt": "2026-05-29T14:30:08.759Z",
+  "updatedAt": "2026-05-29T14:30:08.759Z",
+  "canvas": {
+    "type": "infinite",
+    "viewport": {
+      "x": 0,
+      "y": 0,
+      "scale": 1
+    },
+    "grid": {
+      "mode": "free",
+      "snapStep": 10,
+      "gridSize": 100,
+      "visible": false
+    },
+    "elements": []
+  }
+}

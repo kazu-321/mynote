@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "3113977a-0718-40ed-85e5-0400921f429c",
+  "name": "追加サンプル",
+  "description": "",
+  "createdAt": "2026-05-29T14:11:27.812Z",
+  "updatedAt": "2026-05-29T15:19:40.016Z",
+  "noteOrder": [
+    "7372f8b0-f4fe-4394-889f-102ade8c4ba0",
+    "d234d556-0c66-463f-adbb-a72c82367ba8"
+  ],
+  "notes": [
+    {
+      "id": "7372f8b0-f4fe-4394-889f-102ade8c4ba0",
+      "title": "あ",
+      "metaPath": "notes/3113977a-0718-40ed-85e5-0400921f429c/7372f8b0-f4fe-4394-889f-102ade8c4ba0/meta.json",
+      "notePath": "notes/3113977a-0718-40ed-85e5-0400921f429c/7372f8b0-f4fe-4394-889f-102ade8c4ba0/note.json"
+    },
+    {
+      "id": "d234d556-0c66-463f-adbb-a72c82367ba8",
+      "title": "新規ノート",
+      "metaPath": "notes/3113977a-0718-40ed-85e5-0400921f429c/d234d556-0c66-463f-adbb-a72c82367ba8/meta.json",
+      "notePath": "notes/3113977a-0718-40ed-85e5-0400921f429c/d234d556-0c66-463f-adbb-a72c82367ba8/note.json"
+    }
+  ]
+}

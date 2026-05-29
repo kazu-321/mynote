@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "1355572e-fc36-450c-a00f-38683dfefcea",
+  "name": "UI確認教科",
+  "description": "",
+  "createdAt": "2026-05-29T14:30:08.627Z",
+  "updatedAt": "2026-05-29T15:13:00.264Z",
+  "noteOrder": [
+    "845ba1d5-9b11-4892-80f6-61322240ee27",
+    "8dfcef26-b69f-4c77-947e-f0c0c6df6640"
+  ],
+  "notes": [
+    {
+      "id": "845ba1d5-9b11-4892-80f6-61322240ee27",
+      "title": "UI確認ノートA",
+      "metaPath": "notes/1355572e-fc36-450c-a00f-38683dfefcea/845ba1d5-9b11-4892-80f6-61322240ee27/meta.json",
+      "notePath": "notes/1355572e-fc36-450c-a00f-38683dfefcea/845ba1d5-9b11-4892-80f6-61322240ee27/note.json"
+    },
+    {
+      "id": "8dfcef26-b69f-4c77-947e-f0c0c6df6640",
+      "title": "UI確認ノートB",
+      "metaPath": "notes/1355572e-fc36-450c-a00f-38683dfefcea/8dfcef26-b69f-4c77-947e-f0c0c6df6640/meta.json",
+      "notePath": "notes/1355572e-fc36-450c-a00f-38683dfefcea/8dfcef26-b69f-4c77-947e-f0c0c6df6640/note.json"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "d1641305-6ca7-4947-bb2f-13a9e1a882cd",
+  "name": "ブラウザ教科",
+  "description": "",
+  "createdAt": "2026-05-29T14:18:56.719Z",
+  "updatedAt": "2026-05-29T14:20:37.325Z",
+  "noteOrder": [
+    "8129cb75-e6bd-4863-b3ba-75281076df53"
+  ],
+  "notes": [
+    {
+      "id": "8129cb75-e6bd-4863-b3ba-75281076df53",
+      "title": "ノート",
+      "metaPath": "notes/d1641305-6ca7-4947-bb2f-13a9e1a882cd/8129cb75-e6bd-4863-b3ba-75281076df53/meta.json",
+      "notePath": "notes/d1641305-6ca7-4947-bb2f-13a9e1a882cd/8129cb75-e6bd-4863-b3ba-75281076df53/note.json"
+    }
+  ]
+}

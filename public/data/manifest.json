@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "appName": "mynote",
+  "appVersion": "0.1.0",
+  "subjectOrder": [
+    "011d7dcd-74d9-4c7e-a792-5302d80fac47",
+    "11111111-1111-4111-8111-111111111111",
+    "3113977a-0718-40ed-85e5-0400921f429c",
+    "d1641305-6ca7-4947-bb2f-13a9e1a882cd",
+    "1355572e-fc36-450c-a00f-38683dfefcea"
+  ],
+  "subjects": [
+    {
+      "id": "11111111-1111-4111-8111-111111111111",
+      "name": "サンプル",
+      "path": "subjects/11111111-1111-4111-8111-111111111111.json"
+    },
+    {
+      "id": "3113977a-0718-40ed-85e5-0400921f429c",
+      "name": "追加サンプル",
+      "path": "subjects/3113977a-0718-40ed-85e5-0400921f429c.json"
+    },
+    {
+      "id": "d1641305-6ca7-4947-bb2f-13a9e1a882cd",
+      "name": "ブラウザ教科",
+      "path": "subjects/d1641305-6ca7-4947-bb2f-13a9e1a882cd.json"
+    },
+    {
+      "id": "011d7dcd-74d9-4c7e-a792-5302d80fac47",
+      "name": "a",
+      "path": "subjects/011d7dcd-74d9-4c7e-a792-5302d80fac47.json"
+    },
+    {
+      "id": "1355572e-fc36-450c-a00f-38683dfefcea",
+      "name": "UI確認教科",
+      "path": "subjects/1355572e-fc36-450c-a00f-38683dfefcea.json"
+    }
+  ]
+}
