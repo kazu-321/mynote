@@ -1673,6 +1673,20 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
     const hit = elementAtPointer(pointer);
     setContextMenu(null);
     if (appConfig.mode !== "local-edit") {
+      if (event.button === 1 || spacePressed) {
+        // Middle click pan should work even when the pointer is over an element.
+        // Also prevent the browser's autoscroll behavior.
+        event.preventDefault();
+        try {
+          event.currentTarget.setPointerCapture(event.pointerId);
+        } catch {
+          // Ignore capture failures on unsupported browsers or detached nodes.
+        }
+        setInteraction({ kind: "pan", startPointer: pointer, startViewport: viewport });
+        return;
+      }
+
+      // In readonly mode, allow native text selection on left click.
       if (hit?.type === "text") return;
       if (hit) return;
       try {
