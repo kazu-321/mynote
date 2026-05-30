@@ -1928,7 +1928,9 @@ export function NoteEditorPage(props: { subjectId: string; noteId: string; onBac
   const inspectorElement = inspectorAnchor && activeElement && interaction?.kind !== "resize" ? activeElement : null;
   const inspectorStyle: CSSProperties | null = inspectorAnchor
     ? (() => {
-        const screenBounds = elementScreenBounds(inspectorElement ?? activeElement, viewport);
+        const targetElement = inspectorElement ?? activeElement;
+        if (!targetElement) return null;
+        const screenBounds = elementScreenBounds(targetElement, viewport);
         const preferredLeft = screenBounds.right + 12;
         const preferredTop = inspectorAnchor.y - PROPERTY_PANEL_HEIGHT / 2;
         const left = clamp(preferredLeft, 12, Math.max(12, window.innerWidth - PROPERTY_PANEL_WIDTH - 12));
